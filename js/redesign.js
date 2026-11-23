@@ -490,8 +490,8 @@ document.querySelectorAll('.ab-video').forEach(v => {
   const get = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
   const set = v => { html.classList.remove('ba-a', 'ba-b', 'ba-c'); html.classList.add('ba-' + v); try { localStorage.setItem(KEY, v); } catch (e) {} };
   const q = (location.search.match(/[?&]ba=([ab])/) || [])[1];
-  const saved = get(); set(q || (saved === 'b' ? 'b' : 'a'));
-  if (!/^(localhost|127.0.0.1)$/.test(location.hostname) && !/[?&]ba/.test(location.search)) return;
+  const saved = get(); set(q || 'b');
+  if (!/[?&]ba=/.test(location.search)) return; // перемикач — лише з ?ba=a|b
   const w = document.createElement('div'); w.className = 'ba-switch'; w.innerHTML = '<span>' + T('До/після:', 'Before/after:') + '</span>' + ['a', 'b'].map(v => '<button type="button" data-v="' + v + '">' + v.toUpperCase() + '</button>').join('');
   document.body.appendChild(w);
   const mark = () => w.querySelectorAll('button').forEach(b => b.classList.toggle('on', html.classList.contains('ba-' + b.dataset.v)));

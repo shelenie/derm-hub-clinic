@@ -387,3 +387,8 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 .head .langs{border-radius:999px}
 .head .langs::before{border-radius:999px}
 .to-top,.pol-x{border-radius:50%}
+/* трек прокрутки під стрічками — однаковий відступ від карток по всьому сайту */
+:root{--space-track:clamp(32px,4.4vh,48px)}
+.rail-bar{margin-top:var(--space-track)}
+.res-foot{margin-top:calc(var(--space-track) - 8px)}
+.res-foot .rail-bar{margin:0}

@@ -409,3 +409,27 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 /* «Популярні процедури»: більше повітря над треком */
 .dirs-row + .rail-bar{margin-top:calc(var(--space-track) + clamp(24px,3.4vh,40px))}
 .map .map-gl{position:absolute;inset:0;width:100%;height:100%}
+/* «Не знаєте, що обрати?» — тепла темна картка з фото лікаря */
+.svc.svc-cta{position:relative;isolation:isolate;overflow:hidden;color:#fff;background:radial-gradient(120% 140% at 0% 100%,#5a2a26 0%,rgba(90,42,38,0) 55%),linear-gradient(135deg,#2b2321 0%,#3a2d29 60%,#4a3530 100%)}
+.svc.svc-cta .cat{color:rgba(255,255,255,.66)}
+.svc.svc-cta h3{position:relative;color:#fff}
+.svc.svc-cta .btn{position:relative}
+.svc-cta .cta-doc{position:absolute;z-index:-1;right:0;bottom:0;height:100%;width:auto;max-width:none;object-fit:cover;object-position:50% 0;-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.6) 30%,#000 60%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.6) 30%,#000 60%);opacity:.92;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.svc-cta:hover .cta-doc{transform:scale(1.04)}
+.svc.svc-cta:hover{filter:none}
+.svc-cta:not(.wide) .cta-doc{width:100%;height:100%;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 30%,transparent 78%);mask-image:linear-gradient(180deg,#000 0%,#000 30%,transparent 78%);opacity:.55}
+.svc-cta.wide h3{max-width:12em}
+/* «Про клініку»: вища секція — більше видно відео; картка «Лікуємо» вужча */
+@media (min-width:1101px){
+  .ab-stage{min-height:min(100svh,1000px);padding-block:clamp(72px,12vh,140px);grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:clamp(48px,8vw,160px)}
+}
+.svc-cta:not(.wide) .cta-more{display:none}
+.svc-cta .cta-txt{position:relative}
+.svc-cta .cta-txt p{margin-top:clamp(10px,1.4vh,16px);max-width:24em;font-size:15px;line-height:1.55;color:rgba(255,255,255,.78)}
+.svc-cta.wide .cta-txt h3{max-width:13em}
+.svc-cta.wide .cta-doc{max-width:62%;object-position:50% 30%}
+/* картка-підказка: фото на весь фон + темний градієнт під текст (без маски) */
+.svc-cta .cta-doc,.svc-cta.wide .cta-doc,.svc-cta:not(.wide) .cta-doc{inset:0;right:auto;bottom:auto;width:100%;height:100%;max-width:none;z-index:-2;opacity:1;-webkit-mask-image:none;mask-image:none;object-fit:cover}
+.svc.svc-cta::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(32,24,22,.94) 0%,rgba(32,24,22,.82) 38%,rgba(32,24,22,.25) 72%,rgba(32,24,22,.05) 100%)}
+.svc.svc-cta:not(.wide)::after{background:linear-gradient(180deg,rgba(32,24,22,.2) 0%,rgba(32,24,22,.55) 40%,rgba(32,24,22,.93) 75%)}
+.svc-cta:not(.wide) .cta-txt p{display:none}

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /v1.html
+Disallow: /v2.html
+Disallow: /old-v0.html
+
+Sitemap: https://derm-hub-clinic.vercel.app/sitemap.xml

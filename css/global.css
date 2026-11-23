@@ -408,3 +408,4 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 @media (min-width:1101px){.ab-treat{align-self:center}}
 /* «Популярні процедури»: більше повітря над треком */
 .dirs-row + .rail-bar{margin-top:calc(var(--space-track) + clamp(24px,3.4vh,40px))}
+.map .map-gl{position:absolute;inset:0;width:100%;height:100%}

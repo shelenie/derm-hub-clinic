@@ -1,0 +1,9 @@
+# Не публікуємо на сайті
+.claude/
+CLAUDE.md
+HANDOFF.md
+README.md
+tools/
+old-v0.html
+start-localhost.bat
+localhost-autostart.vbs

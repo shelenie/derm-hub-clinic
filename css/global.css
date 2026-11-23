@@ -390,5 +390,21 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 /* трек прокрутки під стрічками — однаковий відступ від карток по всьому сайту */
 :root{--space-track:clamp(32px,4.4vh,48px)}
 .rail-bar{margin-top:var(--space-track)}
-.res-foot{margin-top:calc(var(--space-track) - 8px)}
+.res-foot{margin-top:calc(var(--space-track) - 5px);align-items:flex-start}
+@media (min-width:701px){.res-foot .btn{translate:0 -50%}}
 .res-foot .rail-bar{margin:0}
+/* карта: векторна OpenFreeMap у кольорах сайту */
+.map-gl{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .6s ease;pointer-events:none}
+.map.gl-on .map-gl{opacity:1}
+.map-gl .maplibregl-canvas{outline:none}
+.map-pin{position:relative;width:22px;height:22px}
+.map-pin b{position:absolute;inset:0;border-radius:50%;background:var(--red);border:4px solid #fff;box-shadow:0 4px 14px rgba(120,20,24,.35)}
+.map-pin i{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:rgba(193,38,44,.22);animation:mapPulse 2.6s ease-out infinite}
+@keyframes mapPulse{0%{transform:scale(1);opacity:1}100%{transform:scale(4);opacity:0}}
+@media (prefers-reduced-motion:reduce){.map-pin i{animation:none}}
+.map-attr{position:absolute;left:14px;bottom:10px;z-index:2;font-size:10px;line-height:1.3;color:rgba(60,50,45,.6);pointer-events:none}
+.map-pin span{position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);white-space:nowrap;padding:7px 13px;border-radius:999px;background:var(--red);color:#fff;font:500 13px/1 var(--sans);letter-spacing:.02em;box-shadow:0 6px 18px rgba(120,20,24,.25)}
+/* «Лікуємо»: картка по висоті вмісту, по центру лівої колонки */
+@media (min-width:1101px){.ab-treat{align-self:center}}
+/* «Популярні процедури»: більше повітря над треком */
+.dirs-row + .rail-bar{margin-top:calc(var(--space-track) + clamp(24px,3.4vh,40px))}

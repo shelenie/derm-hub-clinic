@@ -507,3 +507,63 @@ document.querySelectorAll('.ab-video').forEach(v => {
   v.addEventListener('loadeddata', kick); v.addEventListener('canplay', kick);
   ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(ev => addEventListener(ev, kick, { passive: true }));
 });
+
+// карта в «Контактах»: власний векторний стиль на тайлах OpenFreeMap (без ключа) у кольорах сайту, з червоним піном; SVG — запасний варіант
+(() => {
+  const box = document.querySelector('.map'); if (!box) return;
+  const LL = [30.9524525, 50.3566422], V = '4.7.1', EN = document.documentElement.lang === 'en';
+  const C = { bg: '#E7DFD6', res: '#E3DAD0', green: '#D6D2C3', water: '#9C8F85', bld: '#D8CCC0', bldLine: '#CBBDB0',
+    minor: '#FFFFFF', major: '#FFFFFF', majorCase: '#C9BAAD', trunk: '#7A6D66', rail: '#A79A90',
+    txt: '#6B5F58', txtMain: '#2A2321', halo: '#E7DFD6', poi: '#4A3F3A' };
+  const NAME = ['coalesce', ['get', EN ? 'name:en' : 'name:uk'], ['get', EN ? 'name:latin' : 'name'], ['get', 'name']];
+  const F = ['Noto Sans Regular'], FB = ['Noto Sans Bold'], src = 'omt';
+  const cls = (...c) => ['match', ['get', 'class'], c, true, false];
+  const W = (a, b, c) => ['interpolate', ['exponential', 1.5], ['zoom'], 12, a, 15, b, 18, c];
+  const line = (id, f, color, w, extra = {}) => ({ id, type: 'line', source: src, 'source-layer': 'transportation', filter: f, layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': color, 'line-width': w, ...extra } });
+  const POI = cls('park', 'school', 'college', 'place_of_worship', 'town_hall', 'railway', 'bus', 'library', 'stadium', 'sports_centre', 'cafe', 'monument', 'attraction', 'museum', 'theatre', 'cinema');
+  const style = {
+    version: 8, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
+    sources: { [src]: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' } },
+    layers: [
+      { id: 'bg', type: 'background', paint: { 'background-color': C.bg } },
+      { id: 'res', type: 'fill', source: src, 'source-layer': 'landuse', filter: cls('residential', 'suburb', 'neighbourhood'), paint: { 'fill-color': C.res } },
+      { id: 'green', type: 'fill', source: src, 'source-layer': 'landcover', filter: cls('grass', 'wood', 'farmland'), paint: { 'fill-color': C.green, 'fill-opacity': .8 } },
+      { id: 'park', type: 'fill', source: src, 'source-layer': 'park', paint: { 'fill-color': C.green } },
+      { id: 'water', type: 'fill', source: src, 'source-layer': 'water', paint: { 'fill-color': C.water } },
+      { id: 'waterway', type: 'line', source: src, 'source-layer': 'waterway', paint: { 'line-color': C.water, 'line-width': 1.6 } },
+      { id: 'bld', type: 'fill', source: src, 'source-layer': 'building', minzoom: 14, paint: { 'fill-color': C.bld, 'fill-outline-color': C.bldLine } },
+      line('minor', cls('minor', 'service'), C.minor, W(.5, 3.2, 14)),
+      line('major-case', cls('secondary', 'tertiary'), C.majorCase, W(2, 8, 26)),
+      line('major', cls('secondary', 'tertiary'), C.major, W(1.2, 6, 22)),
+      line('trunk', cls('primary', 'trunk', 'motorway'), C.trunk, W(2, 6, 20)),
+      line('rail', cls('rail', 'transit'), C.rail, 1.4, { 'line-dasharray': [3, 2] }),
+      { id: 'road-name', type: 'symbol', source: src, 'source-layer': 'transportation_name', minzoom: 13.5,
+        layout: { 'symbol-placement': 'line', 'text-field': NAME, 'text-font': F, 'text-size': ['interpolate', ['linear'], ['zoom'], 14, 10.5, 17, 13], 'text-letter-spacing': .04 },
+        paint: { 'text-color': C.txt, 'text-halo-color': C.halo, 'text-halo-width': 1.6 } },
+      { id: 'poi-dot', type: 'circle', source: src, 'source-layer': 'poi', minzoom: 14.5, filter: ['all', ['has', 'name'], POI],
+        paint: { 'circle-radius': 3.2, 'circle-color': C.poi, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.4, 'circle-opacity': .75 } },
+      { id: 'poi', type: 'symbol', source: src, 'source-layer': 'poi', minzoom: 14.5, filter: ['all', ['has', 'name'], POI],
+        layout: { 'text-field': NAME, 'text-font': F, 'text-size': 11.5, 'text-max-width': 8, 'text-anchor': 'left', 'text-offset': [.9, 0], 'text-justify': 'left' },
+        paint: { 'text-color': C.poi, 'text-halo-color': C.halo, 'text-halo-width': 1.6 } },
+      { id: 'place', type: 'symbol', source: src, 'source-layer': 'place', filter: cls('suburb', 'neighbourhood', 'quarter', 'town', 'city', 'village'),
+        layout: { 'text-field': NAME, 'text-font': FB, 'text-size': ['match', ['get', 'class'], ['city', 'town'], 16, 12], 'text-transform': 'uppercase', 'text-letter-spacing': .14 },
+        paint: { 'text-color': C.txtMain, 'text-halo-color': C.halo, 'text-halo-width': 2, 'text-opacity': .8 } }
+    ]
+  };
+  const load = () => new Promise((ok, no) => {
+    if (window.maplibregl) return ok();
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = `js/vendor/maplibre-gl.css?v=${V}`; document.head.appendChild(l);
+    const s = document.createElement('script'); s.src = `js/vendor/maplibre-gl.js?v=${V}`; s.onload = ok; s.onerror = no; document.head.appendChild(s);
+  });
+  const init = () => load().then(() => {
+    const el = document.createElement('div'); el.className = 'map-gl'; el.setAttribute('aria-hidden', 'true'); box.prepend(el);
+    const m = new maplibregl.Map({ container: el, style, center: [LL[0] + .0008, LL[1] - .0012], zoom: 14.9, interactive: false, attributionControl: false, fadeDuration: 0 });
+    box._gl = m;
+    const pin = document.createElement('div'); pin.className = 'map-pin'; pin.innerHTML = '<i></i><b></b><span>Derm Hub</span>';
+    new maplibregl.Marker({ element: pin, anchor: 'center' }).setLngLat(LL).addTo(m);
+    m.once('idle', () => box.classList.add('gl-on')); m.once('load', () => setTimeout(() => box.classList.add('gl-on'), 1500));
+  }).catch(e => console.warn('map:', e));
+  if (!('IntersectionObserver' in window)) return init();
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); init(); } }, { rootMargin: '800px 0px' });
+  io.observe(box);
+})();

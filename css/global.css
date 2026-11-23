@@ -433,3 +433,20 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 .svc.svc-cta::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(32,24,22,.94) 0%,rgba(32,24,22,.82) 38%,rgba(32,24,22,.25) 72%,rgba(32,24,22,.05) 100%)}
 .svc.svc-cta:not(.wide)::after{background:linear-gradient(180deg,rgba(32,24,22,.2) 0%,rgba(32,24,22,.55) 40%,rgba(32,24,22,.93) 75%)}
 .svc-cta:not(.wide) .cta-txt p{display:none}
+/* ===== МОБІЛКА (≤700) ===== */
+@media (max-width:700px){
+  /* вкладки послуг — один рядок зі свайпом */
+  .tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:22px;margin-inline:calc(var(--pad) * -1);padding:0 var(--pad) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none;font-size:24px;white-space:nowrap;text-align:left}
+  /* «До і після»: фільтри в один рядок, без стрілок (гортаємо свайпом), трек на всю ширину */
+  .res-top{flex-direction:column;align-items:stretch;gap:18px}
+  .res-ctrl{width:100%}
+  .ba-sec .chips{flex-wrap:nowrap;gap:22px}
+  .ba-sec .rail-nav{display:none}
+  .res-foot{margin-top:var(--space-track);gap:22px}
+  .res-foot .rail-bar{flex:none;width:100%}
+  .res-foot .btn{translate:none}
+  /* контакти: емблема не налазить на заголовок */
+  .fc-title .fc-emblem{display:none}
+}

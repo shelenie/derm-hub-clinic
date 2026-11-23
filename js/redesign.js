@@ -429,7 +429,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     queued = false;
     const H = innerHeight;
     if (book) { const r = book.getBoundingClientRect(); if (r.bottom > -100 && r.top < H + 100) book.style.setProperty('--py', (cl((r.top + r.height / 2 - H / 2) / H, -1.2, 1.2) * -150).toFixed(1) + 'px'); }
-    if (big) { const r = big.getBoundingClientRect(); const k = cl((H - r.top) / (r.height * 0.95), 0, 1); big.style.setProperty('--by', ((1 - k) * 55).toFixed(1) + '%'); }
+    if (big) { const r = big.getBoundingClientRect(), top0 = r.top - (big._by || 0) * r.height / 100; const k = cl((H - top0) / (r.height * 0.95), 0, 1); big._by = (1 - k) * 55; big.style.setProperty('--by', big._by.toFixed(1) + '%'); }
   };
   const ask = () => { if (!queued) { queued = true; requestAnimationFrame(par); } };
   addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask); par();

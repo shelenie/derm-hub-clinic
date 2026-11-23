@@ -450,3 +450,4 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   /* контакти: емблема не налазить на заголовок */
   .fc-title .fc-emblem{display:none}
 }
+.bigword{margin-bottom:clamp(16px,3vh,36px)}

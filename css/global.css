@@ -165,18 +165,6 @@
   .ab-pyr{grid-template-columns:1fr}
   .pyr{width:min(100%,720px);margin-right:0}
 }
-/* телефон: піраміда стає списком рівнів знизу догори */
-@media (max-width:700px){
-  .pyr{aspect-ratio:auto;flex-direction:column-reverse;gap:10px;width:100%}
-  .pyr-tier{flex:none;pointer-events:auto;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r-s);background:#fff;border:1px solid var(--line)}
-  .pyr-shape{display:none}
-  .pyr-txt,.pyr-tier:first-child .pyr-txt{position:static;transform:none;width:auto;flex:1;align-items:flex-start;text-align:left}
-  .pyr-ic{display:none}
-  .pyr-pin{position:static;width:auto;height:auto;order:-1}
-  .pyr-badge,.pyr-l .pyr-badge,.pyr-r .pyr-badge{--d:40px;position:static;flex-direction:column;height:auto;width:var(--d);background:var(--ink);box-shadow:none}
-  .pyr-badge i{line-height:var(--d)}
-  .pyr-badge em{display:none}
-  .pyr-txt::after{content:attr(data-fq);margin-top:6px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 }
 
 #care-plan .ab-pyr{margin-top:0}
@@ -282,7 +270,7 @@ html.ab-v2 .ab-treat{background:none;border:0;box-shadow:none;-webkit-backdrop-f
 .ab-stage{background:#2b2523 url(../img/about-poster.jpg) center 40%/cover}
 .ab-video{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:center 40%;border-radius:inherit;pointer-events:none}
 .ab-stage::before{background:linear-gradient(180deg,rgba(18,12,11,.5),rgba(18,12,11,.66));-webkit-backdrop-filter:blur(3px) saturate(90%);backdrop-filter:blur(3px) saturate(90%)}
-@media (max-width:700px){.ab-video{display:none}}
+
 /* онлайн-запис: фон — квіти, що були в «Про клініку» */
 .booking::before{background:url(../img/bg-about.jpg) center 40%/cover}
 /* піраміда: виразніша поява ярусів при скролі */
@@ -451,3 +439,55 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .fc-title .fc-emblem{display:none}
 }
 .bigword{margin-bottom:-.04em}
+
+/* ===== МОБІЛКА, раунд 2 ===== */
+/* 11: без підпису OpenStreetMap на карті (усі версії) */
+.map-attr{display:none}
+@media (max-width:640px){
+  /* 2–3: хіро — відео зверху на весь перший екран, текст під ним, дівчину видно повністю */
+  .hero-frame{position:relative;height:auto;min-height:0;max-height:none;display:flex;flex-direction:column;background:#2a211e}
+  .hero-frame>.hero-mob{position:relative;inset:auto;top:auto;bottom:auto;flex:none;width:100%;height:min(76svh,640px);object-position:50% 62%}
+  .hero-shade{inset:0 0 auto 0;height:min(76svh,640px);background:linear-gradient(0deg,#2a211e 0%,rgba(42,33,30,.6) 14%,rgba(42,33,30,0) 34%),linear-gradient(180deg,rgba(20,16,14,.35) 0,rgba(20,16,14,0) 130px)}
+  .hero-glass{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;margin-top:-84px;padding:0 20px 30px;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  /* 15: верхня кнопка — акцентна */
+  .hero-glass .btn-pop,.hero-glass .btn-pop:hover{background:var(--red);color:#fff;border-color:var(--red)}
+}
+@media (max-width:700px){
+  /* 1: відгуки — свайп убік, усі одразу */
+  .rvx-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;gap:10px;margin-inline:-16px;padding:0 16px 6px;border-radius:0;background:none;border:0;box-shadow:none;scrollbar-width:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .rvx-grid::-webkit-scrollbar{display:none}
+  .rvx-grid .rvq,.rvx-grid .rvq-more,.rvx-grid .rvq:nth-child(n+5):not(.rvq-more){display:flex;flex:none;width:82%;scroll-snap-align:start;border:1px solid rgba(255,255,255,.75)!important;border-radius:22px;background:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .rvx-more{display:none}
+  /* 4–5: прайс — фото вкладки і картка-підказка теж на телефоні */
+  .panel .svc.photo{min-height:0;aspect-ratio:4/3}
+  .panel .svc-cta{display:flex;min-height:300px}
+  .svc-detail{grid-column:auto}
+  /* 6: піраміда */
+  .pyr{aspect-ratio:auto;flex-direction:column;gap:5px;width:calc(100% - 40px);margin:8px auto 0}
+  .pyr-tier{flex:none;--sx:1;pointer-events:auto;padding:18px 0 16px}
+  .pyr-tier:first-child{padding-top:118px}
+  .pyr-tier:first-child .pyr-txt{width:44%}
+  .pyr-shape{display:block}
+  .pyr-txt,.pyr-tier:first-child .pyr-txt{position:relative;left:auto;top:auto;bottom:auto;transform:none;margin:0 auto;width:var(--tw);display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px}
+  .pyr-ic{display:none}
+  .pyr-txt b{font-size:11px;letter-spacing:.08em}
+  .pyr-txt span{font-size:12.5px;line-height:1.35}
+  .pyr-txt::after{content:attr(data-fq);margin-top:4px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);line-height:1.3}
+  .pyr-badge,.pyr-l .pyr-badge,.pyr-r .pyr-badge{--d:34px}
+  .pyr-badge em{display:none}
+  .pyr-badge i{font-size:14px}
+  /* 7: «Про клініку» — відео на фоні, більше повітря між фактами */
+  .ab-stage::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(18,12,11,.35),rgba(18,12,11,.55))}
+  .ab-facts{row-gap:28px}
+  /* 8: лікарі — відступ зліва при свайпі */
+  .team{scroll-padding-inline:var(--pad)}
+  .team .doc{scroll-snap-align:start}
+  /* 9: онлайн-запис трохи вужчий */
+  .book-stage{margin-inline:10px}
+  /* 10: емблема в Контактах повертається — над заголовком, праворуч */
+  .fc-title{flex-direction:column-reverse;align-items:stretch}
+  .fc-title .fc-emblem{display:block;align-self:flex-end;zoom:.5;margin-bottom:-36px}
+  /* 12: «Онлайн-запис» у футері — підпис і кнопка в один рядок */
+  .fb-cta{flex-direction:row;align-items:center;justify-content:space-between;gap:16px}
+  .fb-cta .fb-h{margin:0}
+}

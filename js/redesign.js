@@ -119,6 +119,7 @@ document.querySelectorAll('.langs').forEach(t => t.onclick = () => {
     const b = e.target.closest('.more-btn'); if (!b) return;
     const card = b.closest('.svc'), panel = b.closest('.panel'), box = panel.querySelector('.svc-detail');
     const wasOpen = card.classList.contains('open');
+    if (innerWidth <= 700) card.after(box); else if (box !== panel.lastElementChild) panel.append(box);
     panel.querySelectorAll('.svc.open').forEach(c => { c.classList.remove('open'); c.querySelector('.more-btn').textContent = T('Весь прайс', 'Full price list'); });
     if (wasOpen) { box.classList.remove('on'); return; }
     card.classList.add('open'); b.textContent = T('Згорнути', 'Collapse');
@@ -233,7 +234,7 @@ const setHead = () => {
 let lastY = scrollY;
 addEventListener('scroll', setHead, { passive: true });
 const toTop = document.querySelector('.to-top');
-if (toTop) { const t = () => toTop.classList.toggle('on', scrollY > innerHeight * .9); addEventListener('scroll', t, { passive: true }); t(); } addEventListener('resize', setHead); setHead();
+if (toTop) { const bw = document.querySelector('.bigword'); const t = () => toTop.classList.toggle('on', scrollY > innerHeight * .9 && !(innerWidth <= 700 && bw && bw.getBoundingClientRect().top < innerHeight - 8)); addEventListener('scroll', t, { passive: true }); t(); } addEventListener('resize', setHead); setHead();
 
 // стрічка напрямів → відкриває потрібну вкладку прайсу
 document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', () => {
@@ -479,7 +480,7 @@ document.querySelectorAll('.pyr').forEach(p => {
 
 // відео у «Про клініку»: грає лише коли секцію видно; на телефоні й при «менше анімацій» — заставка
 document.querySelectorAll('.ab-video').forEach(v => {
-  if (innerWidth <= 700 || matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.preload = 'none'; return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.preload = 'none'; return; }
   new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }), { threshold: .1 }).observe(v);
 });
 
@@ -501,7 +502,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
 
 // відео у «Про клініку»: якщо браузер не запустив його одразу — пробуємо ще раз, коли дані підвантажились або після першої взаємодії
 document.querySelectorAll('.ab-video').forEach(v => {
-  if (innerWidth <= 700 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const vis = () => { const r = v.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
   const kick = () => { if (v.paused && vis()) v.play().catch(() => {}); };
   v.addEventListener('loadeddata', kick); v.addEventListener('canplay', kick);
@@ -566,4 +567,33 @@ document.querySelectorAll('.ab-video').forEach(v => {
   if (!('IntersectionObserver' in window)) return init();
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); init(); } }, { rootMargin: '800px 0px' });
   io.observe(box);
+})();
+
+// усі фонові відео: грають, коли їх видно; якщо браузер сам зупинив (iOS, економія заряду) — запускаємо знову при дотику чи прокрутці
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const seen = new Set();
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { seen.add(v); v.play().catch(() => {}); } else { seen.delete(v); v.pause(); } }), { threshold: .05 });
+  document.querySelectorAll('video[loop]').forEach(v => {
+    v.muted = true; v.playsInline = true; io.observe(v);
+    v.addEventListener('pause', () => setTimeout(() => { if (seen.has(v) && v.paused && !document.hidden) v.play().catch(() => {}); }, 250));
+  });
+  const kick = () => seen.forEach(v => { if (v.paused) v.play().catch(() => {}); });
+  ['touchstart', 'pointerdown', 'scroll'].forEach(ev => addEventListener(ev, kick, { passive: true }));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
+})();
+
+// телефон: піраміда догляду з ширшими ярусами (щоб текст вміщався всередині); на комп'ютері — форма з розмітки
+(() => {
+  const tiers = [...document.querySelectorAll('.pyr-tier')]; if (tiers.length !== 5) return;
+  const orig = tiers.map(t => [t.querySelector('polygon').getAttribute('points'), t.style.getPropertyValue('--m'), t.style.getPropertyValue('--tw')]);
+  const TOP = [0, 30, 36, 41, 45.5], BOT = [30, 36, 41, 45.5, 50], TW = ['52%', '58%', '68%', '78%', '86%'];
+  tiers.forEach(t => { const em = t.querySelector('.pyr-badge em'), tx = t.querySelector('.pyr-txt'); if (em && tx) tx.dataset.fq = em.textContent; });
+  const mq = matchMedia('(max-width:700px)');
+  const apply = () => tiers.forEach((t, i) => {
+    const p = t.querySelector('polygon');
+    if (mq.matches) { p.setAttribute('points', `${50 - TOP[i]},0 ${50 + TOP[i]},0 ${50 + BOT[i]},100 ${50 - BOT[i]},100`); t.style.setProperty('--m', ((TOP[i] + BOT[i]) / 100).toFixed(3)); t.style.setProperty('--tw', TW[i]); }
+    else { p.setAttribute('points', orig[i][0]); t.style.setProperty('--m', orig[i][1]); t.style.setProperty('--tw', orig[i][2]); }
+  });
+  apply(); mq.addEventListener('change', apply);
 })();

@@ -468,14 +468,14 @@ document.querySelectorAll('.pyr').forEach(p => {
   const tiers = [...p.querySelectorAll('.pyr-tier')]; tiers.forEach((t, k) => t.style.setProperty('--i', tiers.length - 1 - k));
   p.classList.add('pyr-anim'); let tm;
   new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting && e.intersectionRatio >= .45) {
+    if (e.isIntersecting && e.intersectionRatio >= (innerWidth <= 700 ? .12 : .45)) {
       if (p.classList.contains('pyr-in')) return;
       p.classList.add('pyr-in'); if (sec) sec.classList.add('cp-in');
       if (innerWidth <= 700) return;
       const last = tiers[tiers.length - 1];
       tm = setTimeout(() => { if (!p.querySelector('.pyr-tier.on, .pyr-tier:hover')) { last.classList.add('on'); tm = setTimeout(() => last.classList.remove('on'), 2200); } }, tiers.length * 200 + 900);
     } else if (!e.isIntersecting) { p.classList.remove('pyr-in'); if (sec) sec.classList.remove('cp-in'); clearTimeout(tm); tiers.forEach(t => t.classList.remove('on')); }
-  }), { threshold: [0, .45] }).observe(p);
+  }), { threshold: [0, .12, .45] }).observe(p);
 });
 
 // відео у «Про клініку»: грає лише коли секцію видно; на телефоні й при «менше анімацій» — заставка
@@ -583,17 +583,13 @@ document.querySelectorAll('.ab-video').forEach(v => {
   document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
 })();
 
-// телефон: піраміда догляду з ширшими ярусами (щоб текст вміщався всередині); на комп'ютері — форма з розмітки
+
+// телефон: під пірамідою — легенда з поясненнями (у самій піраміді лише назви ярусів)
 (() => {
-  const tiers = [...document.querySelectorAll('.pyr-tier')]; if (tiers.length !== 5) return;
-  const orig = tiers.map(t => [t.querySelector('polygon').getAttribute('points'), t.style.getPropertyValue('--m'), t.style.getPropertyValue('--tw')]);
-  const TOP = [0, 30, 36, 41, 45.5], BOT = [30, 36, 41, 45.5, 50], TW = ['52%', '58%', '68%', '78%', '86%'];
-  tiers.forEach(t => { const em = t.querySelector('.pyr-badge em'), tx = t.querySelector('.pyr-txt'); if (em && tx) tx.dataset.fq = em.textContent; });
-  const mq = matchMedia('(max-width:700px)');
-  const apply = () => tiers.forEach((t, i) => {
-    const p = t.querySelector('polygon');
-    if (mq.matches) { p.setAttribute('points', `${50 - TOP[i]},0 ${50 + TOP[i]},0 ${50 + BOT[i]},100 ${50 - BOT[i]},100`); t.style.setProperty('--m', ((TOP[i] + BOT[i]) / 100).toFixed(3)); t.style.setProperty('--tw', TW[i]); }
-    else { p.setAttribute('points', orig[i][0]); t.style.setProperty('--m', orig[i][1]); t.style.setProperty('--tw', orig[i][2]); }
-  });
-  apply(); mq.addEventListener('change', apply);
+  const p = document.querySelector('.pyr'); if (!p) return;
+  const tiers = [...p.querySelectorAll('.pyr-tier')].reverse();
+  const ol = document.createElement('ol'); ol.className = 'pyr-legend';
+  ol.innerHTML = tiers.map(t => { const n = t.querySelector('.pyr-badge i'), b = t.querySelector('.pyr-txt b'), sp = t.querySelector('.pyr-txt span'), em = t.querySelector('.pyr-badge em');
+    return '<li><i>' + (n ? n.textContent : '') + '</i><div><b>' + (b ? b.textContent : '') + '</b><span>' + (sp ? sp.textContent : '') + '</span><em>' + (em ? em.textContent : '') + '</em></div></li>'; }).join('');
+  p.after(ol);
 })();

@@ -249,7 +249,7 @@ document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', 
 document.querySelectorAll('.rail-wrap').forEach(w => {
   const r = w.querySelector('.rail'), prev = w.querySelector('[data-prev]'), next = w.querySelector('[data-next]'), bar = w.querySelector('.rail-bar i');
   const upd = () => {
-    const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1;
+    const max = r.scrollWidth - r.clientWidth, k = max > 0 ? Math.min(1, Math.max(0, r.scrollLeft / max)) : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1;
     if (bar) { bar.style.width = (part * 100) + '%'; bar.style.transform = `translateX(${k * (1 / part - 1) * 100}%)`; }
     if (prev) prev.disabled = r.scrollLeft < 4;
     if (next) next.disabled = r.scrollLeft > max - 4;
@@ -580,7 +580,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
 
 // лікарі: лінія прогресу під картками (телефон)
 { const r = document.querySelector('.team'), bar = document.querySelector('.team-bar i');
-  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
+  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? Math.min(1, Math.max(0, r.scrollLeft / max)) : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
 
 // телефон: хіро — дівчина відкриває очі, посміхається, заплющує очі й завмирає; тоді по черзі з'являються плашки з лініями до зон.
@@ -637,7 +637,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
 
 // відгуки на телефоні: лінія прокрутки
 { const r = document.querySelector('.rvx-grid'), bar = document.querySelector('.rvx-bar i');
-  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
+  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? Math.min(1, Math.max(0, r.scrollLeft / max)) : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
 
 

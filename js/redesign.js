@@ -573,12 +573,12 @@ document.querySelectorAll('.ab-video').forEach(v => {
 (() => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const seen = new Set();
-  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { seen.add(v); v.play().catch(() => {}); } else { seen.delete(v); v.pause(); } }), { threshold: .05 });
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) { seen.add(v); if (v.loop) v.play().catch(() => {}); } else { seen.delete(v); v.pause(); } }), { threshold: .05 });
   document.querySelectorAll('video[loop]').forEach(v => {
     v.muted = true; v.playsInline = true; io.observe(v);
-    v.addEventListener('pause', () => setTimeout(() => { if (seen.has(v) && v.paused && !document.hidden) v.play().catch(() => {}); }, 250));
+    v.addEventListener('pause', () => setTimeout(() => { if (v.loop && seen.has(v) && v.paused && !document.hidden) v.play().catch(() => {}); }, 250));
   });
-  const kick = () => seen.forEach(v => { if (v.paused) v.play().catch(() => {}); });
+  const kick = () => seen.forEach(v => { if (v.paused && v.loop) v.play().catch(() => {}); });
   ['touchstart', 'pointerdown', 'scroll'].forEach(ev => addEventListener(ev, kick, { passive: true }));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
 })();
@@ -611,36 +611,44 @@ document.querySelectorAll('.ab-video').forEach(v => {
   if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
 
-// телефон: у хіро по черзі з'являються компактні плашки (назва + процедура) поруч з обличчям, лінія веде до зони
+// телефон: хіро — дівчина посміхається, заплющує очі й завмирає; тоді по черзі з'являються плашки з лініями до зон.
+// Коли гортають сайт — відео знову з початку (відкриває очі, посміхається)
 (() => {
   const fr = document.querySelector('.hero-frame'), vid = fr && fr.querySelector('.hero-mob'); if (!fr || !vid) return;
+  const mq = matchMedia('(max-width:640px)'), still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const setLoop = () => { vid.loop = !mq.matches; }; setLoop(); mq.addEventListener('change', setLoop);
   const items = [...document.querySelectorAll('.callouts .co .lb')].map(l => [(l.querySelector('b') || {}).textContent || '', ((l.querySelector('span') || {}).textContent || '').split(' · ')[0]]).filter(x => x[0]);
-  if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  // зони на кадрі відео (частки ширини/висоти), у порядку міток: мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
-  const PT = [[.457, .469], [.384, .54], [.422, .592], [.472, .566], [.41, .622], [.47, .617], [.445, .575], [.41, .662]];
-  const mq = matchMedia('(max-width:640px)'), NS = 'http://www.w3.org/2000/svg';
+  if (!items.length || still) return;
+  // зони на останньому кадрі (очі заплющені), частки ширини/висоти: мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
+  const PT = [[.458, .453], [.358, .547], [.396, .594], [.444, .574], [.389, .648], [.451, .634], [.417, .559], [.354, .68]];
+  const NS = 'http://www.w3.org/2000/svg';
   const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true');
   const svg = document.createElementNS(NS, 'svg'); box.appendChild(svg); fr.appendChild(box);
-  let i = 0;
-  const show = () => {
-    setTimeout(show, 2600);
-    if (!mq.matches || document.hidden || scrollY > innerHeight * .8) return;
-    const h1 = fr.querySelector('.hero-glass h1'), ld = fr.querySelector('.hero-glass .lead'); if (!h1 || !ld) return;
+  let i = 0, lastT = 0, y0 = 0;
+  const clear = () => { box.querySelectorAll('.htag').forEach(el => { el.classList.remove('in'); el.classList.add('out'); setTimeout(() => el.remove(), 800); }); svg.querySelectorAll('path').forEach(p => { p.classList.remove('in'); setTimeout(() => p.remove(), 800); }); };
+  const render = () => {
+    if (!mq.matches || !vid.ended || document.hidden || scrollY > innerHeight * .8 || Date.now() - lastT < 2000) return;
+    const ld = fr.querySelector('.hero-glass .lead'), cta = fr.querySelector('.hero-glass .hero-cta'); if (!ld || !cta) return;
     const F = fr.getBoundingClientRect(), V = vid.getBoundingClientRect();
-    const top = h1.getBoundingClientRect().bottom - F.top + 16, bot = ld.getBoundingClientRect().top - F.top - 16;
+    const top = ld.getBoundingClientRect().bottom - F.top + 14, bot = cta.getBoundingClientRect().top - F.top - 14;
     if (bot - top < 70) return;
     const n = i++ % items.length, [b, sp] = items[n], p = PT[n] || PT[0];
-    const px = V.left - F.left + p[0] * V.width, py = V.top - F.top + p[1] * V.height; if (py > bot + 8) return;
+    const px = V.left - F.left + p[0] * V.width, py = V.top - F.top + p[1] * V.height;
+    if (py < top - 8 || py > bot + 8) return;
+    lastT = Date.now();
     const el = document.createElement('div'); el.className = 'htag'; el.innerHTML = '<b></b><span></span>';
     el.firstChild.textContent = b; el.lastChild.textContent = sp; box.appendChild(el);
     const w = el.offsetWidth, h = el.offsetHeight;
     const x = Math.round(Math.max(16, px - w - 34)); el.style.left = x + 'px';
     const y = Math.round(Math.min(Math.max(py - h / 2 - 30, top), bot - h)); el.style.top = y + 'px';
-    const x1 = x + w, y1 = y + h / 2 + 6, gap = Math.max(0, px - x1);
+    const x1 = x + w, y1 = y + h / 2 + 6, len = Math.hypot(px - x1, py - y1);
     const ln = document.createElementNS(NS, 'path'); ln.setAttribute('d', 'M' + x1 + ' ' + y1 + ' L' + px + ' ' + py);
-    const len = Math.hypot(px - x1, py - y1); ln.style.strokeDasharray = len; ln.style.strokeDashoffset = gap ? len : 0; svg.appendChild(ln);
+    ln.style.strokeDasharray = len; ln.style.strokeDashoffset = px > x1 ? len : 0; svg.appendChild(ln);
     requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('in'); ln.classList.add('in'); ln.style.strokeDashoffset = 0; }));
     setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); ln.classList.remove('in'); setTimeout(() => { el.remove(); ln.remove(); }, 800); }, 2300);
   };
-  setTimeout(show, 1200);
+  setInterval(render, 2600);
+  vid.addEventListener('ended', () => { if (!mq.matches) return; y0 = scrollY; setTimeout(render, 500); });
+  vid.addEventListener('play', clear);
+  addEventListener('scroll', () => { if (mq.matches && vid.ended && Math.abs(scrollY - y0) > 40) { vid.currentTime = 0; vid.play().catch(() => {}); } }, { passive: true });
 })();

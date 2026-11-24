@@ -611,26 +611,35 @@ document.querySelectorAll('.ab-video').forEach(v => {
   if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
 
-// телефон: у хіро по черзі з'являються компактні плашки-мітки (назва + процедура, без цін)
+// телефон: у хіро по черзі з'являються компактні плашки (назва + процедура) поруч з обличчям, лінія веде до зони
 (() => {
-  const fr = document.querySelector('.hero-frame'); if (!fr) return;
+  const fr = document.querySelector('.hero-frame'), vid = fr && fr.querySelector('.hero-mob'); if (!fr || !vid) return;
   const items = [...document.querySelectorAll('.callouts .co .lb')].map(l => [(l.querySelector('b') || {}).textContent || '', ((l.querySelector('span') || {}).textContent || '').split(' · ')[0]]).filter(x => x[0]);
   if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const mq = matchMedia('(max-width:640px)');
-  const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true'); fr.appendChild(box);
-  const SLOTS = [[.12, 'r'], [.6, 'l'], [.92, 'r'], [.3, 'l']];
-  let i = 0, k = 0;
+  // зони на кадрі відео (частки ширини/висоти), у порядку міток: мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
+  const PT = [[.514, .48], [.41, .55], [.43, .6], [.514, .58], [.42, .655], [.505, .652], [.46, .59], [.40, .672]];
+  const mq = matchMedia('(max-width:640px)'), NS = 'http://www.w3.org/2000/svg';
+  const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true');
+  const svg = document.createElementNS(NS, 'svg'); box.appendChild(svg); fr.appendChild(box);
+  let i = 0;
   const show = () => {
-    setTimeout(show, 1800);
+    setTimeout(show, 2600);
     if (!mq.matches || document.hidden || scrollY > innerHeight * .8) return;
     const h1 = fr.querySelector('.hero-glass h1'), ld = fr.querySelector('.hero-glass .lead'); if (!h1 || !ld) return;
-    const F = fr.getBoundingClientRect(), top = h1.getBoundingClientRect().bottom - F.top + 16, bot = ld.getBoundingClientRect().top - F.top - 16 - 54;
-    if (bot - top < 40) return;
-    const [b, sp] = items[i++ % items.length], [f, side] = SLOTS[k++ % SLOTS.length];
-    const el = document.createElement('div'); el.className = 'htag htag-' + side; el.innerHTML = '<b></b><span></span>';
-    el.firstChild.textContent = b; el.lastChild.textContent = sp; el.style.top = Math.round(top + (bot - top) * f) + 'px';
-    box.appendChild(el); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
-    setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); setTimeout(() => el.remove(), 800); }, 3200);
+    const F = fr.getBoundingClientRect(), V = vid.getBoundingClientRect();
+    const top = h1.getBoundingClientRect().bottom - F.top + 16, bot = ld.getBoundingClientRect().top - F.top - 16;
+    if (bot - top < 70) return;
+    const n = i++ % items.length, [b, sp] = items[n], p = PT[n] || PT[0];
+    const px = V.left - F.left + p[0] * V.width, py = V.top - F.top + p[1] * V.height; if (py > bot + 8) return;
+    const el = document.createElement('div'); el.className = 'htag'; el.innerHTML = '<b></b><span></span>';
+    el.firstChild.textContent = b; el.lastChild.textContent = sp; box.appendChild(el);
+    const w = el.offsetWidth, h = el.offsetHeight;
+    const y = Math.round(Math.min(Math.max(py - h / 2 + (n % 2 ? 26 : -26), top), bot - h)); el.style.top = y + 'px';
+    const x1 = 20 + w, y1 = y + h / 2, gap = Math.max(0, px - x1);
+    const ln = document.createElementNS(NS, 'path'); ln.setAttribute('d', 'M' + x1 + ' ' + y1 + ' L' + px + ' ' + py);
+    const len = Math.hypot(px - x1, py - y1); ln.style.strokeDasharray = len; ln.style.strokeDashoffset = gap ? len : 0; svg.appendChild(ln);
+    requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('in'); ln.classList.add('in'); ln.style.strokeDashoffset = 0; }));
+    setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); ln.classList.remove('in'); setTimeout(() => { el.remove(); ln.remove(); }, 800); }, 2300);
   };
   setTimeout(show, 1200);
 })();

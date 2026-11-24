@@ -451,7 +451,7 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 @media (max-width:640px){
   /* хіро: відео ще більше й правіше (ліве крило носа за краєм), голова під меню; усі тексти — ліворуч від обличчя на склі з розмиттям */
   .hero-frame{height:max(100svh,600px)}
-  .hero-frame>.hero-mob{--u:1vw;top:calc(var(--head) + 4px - var(--u) * 129);left:-14vw;right:auto;bottom:auto;width:calc(var(--u) * 205);height:calc(var(--u) * 364.5);max-width:none;object-fit:cover;object-position:0 0}
+  .hero-frame>.hero-mob{--u:1vw;top:calc(var(--head) - 36px - var(--u) * 129);left:-14vw;right:auto;bottom:auto;width:calc(var(--u) * 205);height:calc(var(--u) * 364.5);max-width:none;object-fit:cover;object-position:0 0}
   .hero-shade{background:linear-gradient(90deg,rgba(24,18,16,.66) 0%,rgba(24,18,16,.42) 40%,rgba(24,18,16,.06) 70%,rgba(24,18,16,.06) 100%),linear-gradient(0deg,rgba(24,18,16,.68) 0%,rgba(24,18,16,.35) 26%,rgba(24,18,16,0) 46%),linear-gradient(180deg,rgba(24,18,16,.3) 0,rgba(24,18,16,0) 130px)}
   /* без плашки: тексти прямо на відео ліворуч від обличчя, кнопки — внизу першого екрана */
   .hero-glass{inset:calc(var(--head) + 14px) 20px 22px 20px;width:auto;padding:0;display:flex;flex-direction:column;justify-content:flex-start;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}

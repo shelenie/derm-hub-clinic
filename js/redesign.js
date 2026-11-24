@@ -610,3 +610,27 @@ document.querySelectorAll('.ab-video').forEach(v => {
 { const r = document.querySelector('.team'), bar = document.querySelector('.team-bar i');
   if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
+
+// телефон: у хіро по черзі з'являються компактні плашки-мітки (назва + процедура, без цін)
+(() => {
+  const fr = document.querySelector('.hero-frame'); if (!fr) return;
+  const items = [...document.querySelectorAll('.callouts .co .lb')].map(l => [(l.querySelector('b') || {}).textContent || '', ((l.querySelector('span') || {}).textContent || '').split(' · ')[0]]).filter(x => x[0]);
+  if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const mq = matchMedia('(max-width:640px)');
+  const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true'); fr.appendChild(box);
+  const SLOTS = [[.12, 'r'], [.6, 'l'], [.92, 'r'], [.3, 'l']];
+  let i = 0, k = 0;
+  const show = () => {
+    setTimeout(show, 1800);
+    if (!mq.matches || document.hidden || scrollY > innerHeight * .8) return;
+    const h1 = fr.querySelector('.hero-glass h1'), ld = fr.querySelector('.hero-glass .lead'); if (!h1 || !ld) return;
+    const F = fr.getBoundingClientRect(), top = h1.getBoundingClientRect().bottom - F.top + 16, bot = ld.getBoundingClientRect().top - F.top - 16 - 54;
+    if (bot - top < 40) return;
+    const [b, sp] = items[i++ % items.length], [f, side] = SLOTS[k++ % SLOTS.length];
+    const el = document.createElement('div'); el.className = 'htag htag-' + side; el.innerHTML = '<b></b><span></span>';
+    el.firstChild.textContent = b; el.lastChild.textContent = sp; el.style.top = Math.round(top + (bot - top) * f) + 'px';
+    box.appendChild(el); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
+    setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); setTimeout(() => el.remove(), 800); }, 3200);
+  };
+  setTimeout(show, 1200);
+})();

@@ -611,23 +611,24 @@ document.querySelectorAll('.ab-video').forEach(v => {
   if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
 
-// телефон: хіро — дівчина посміхається, заплющує очі й завмирає; тоді по черзі з'являються плашки з лініями до зон.
-// Коли гортають сайт — відео знову з початку (відкриває очі, посміхається)
+// телефон: хіро — дівчина відкриває очі, посміхається, заплющує очі й завмирає; тоді по черзі з'являються плашки з лініями до зон.
+// Від найменшого дотику чи прокрутки — «оживає» знову
 (() => {
   const fr = document.querySelector('.hero-frame'), vid = fr && fr.querySelector('.hero-mob'); if (!fr || !vid) return;
   const mq = matchMedia('(max-width:640px)'), still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const START = .8, STOP = 6.8, RATE = 1.35;   // секунди відео: старт перед відкриттям очей, зупинка — очі щойно заплющились
   const setLoop = () => { vid.loop = !mq.matches; }; setLoop(); mq.addEventListener('change', setLoop);
   const items = [...document.querySelectorAll('.callouts .co .lb')].map(l => [(l.querySelector('b') || {}).textContent || '', ((l.querySelector('span') || {}).textContent || '').split(' · ')[0]]).filter(x => x[0]);
-  if (!items.length || still) return;
-  // зони на останньому кадрі (очі заплющені), частки ширини/висоти: мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
+  if (still) return;
+  // зони на кадрі із заплющеними очима (частки ширини/висоти): мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
   const PT = [[.458, .453], [.358, .547], [.396, .594], [.444, .574], [.389, .648], [.451, .634], [.417, .559], [.354, .68]];
   const NS = 'http://www.w3.org/2000/svg';
   const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true');
   const svg = document.createElementNS(NS, 'svg'); box.appendChild(svg); fr.appendChild(box);
-  let i = 0, lastT = 0, y0 = 0;
+  let i = 0, lastT = 0, y0 = 0, frozen = false;
   const clear = () => { box.querySelectorAll('.htag').forEach(el => { el.classList.remove('in'); el.classList.add('out'); setTimeout(() => el.remove(), 800); }); svg.querySelectorAll('path').forEach(p => { p.classList.remove('in'); setTimeout(() => p.remove(), 800); }); };
   const render = () => {
-    if (!mq.matches || !vid.ended || document.hidden || scrollY > innerHeight * .8 || Date.now() - lastT < 2000) return;
+    if (!mq.matches || !frozen || !items.length || document.hidden || scrollY > innerHeight * .8 || Date.now() - lastT < 2000) return;
     const ld = fr.querySelector('.hero-glass .lead'), cta = fr.querySelector('.hero-glass .hero-cta'); if (!ld || !cta) return;
     const F = fr.getBoundingClientRect(), V = vid.getBoundingClientRect();
     const top = ld.getBoundingClientRect().bottom - F.top + 14, bot = cta.getBoundingClientRect().top - F.top - 14;
@@ -648,7 +649,13 @@ document.querySelectorAll('.ab-video').forEach(v => {
     setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); ln.classList.remove('in'); setTimeout(() => { el.remove(); ln.remove(); }, 800); }, 2300);
   };
   setInterval(render, 2600);
-  vid.addEventListener('ended', () => { if (!mq.matches) return; y0 = scrollY; setTimeout(render, 500); });
-  vid.addEventListener('play', clear);
-  addEventListener('scroll', () => { if (mq.matches && vid.ended && Math.abs(scrollY - y0) > 40) { vid.currentTime = 0; vid.play().catch(() => {}); } }, { passive: true });
+  const freeze = () => { vid.pause(); frozen = true; y0 = scrollY; setTimeout(render, 150); };
+  const watch = () => { if (!mq.matches || frozen) return; if (vid.currentTime >= STOP) freeze(); else if (!vid.paused) requestAnimationFrame(watch); };
+  vid.addEventListener('loadedmetadata', () => { if (mq.matches && vid.currentTime < START) vid.currentTime = START; });
+  vid.addEventListener('play', () => { if (!mq.matches) return; vid.playbackRate = RATE; frozen = false; clear(); requestAnimationFrame(watch); });
+  vid.addEventListener('ended', () => { if (mq.matches && !frozen) freeze(); });
+  const wake = () => { if (!mq.matches || !frozen) return; frozen = false; clear(); vid.currentTime = START; vid.play().catch(() => {}); };
+  addEventListener('scroll', () => { if (Math.abs(scrollY - y0) > 2) wake(); }, { passive: true });
+  addEventListener('touchstart', wake, { passive: true });
+  addEventListener('pointerdown', wake, { passive: true });
 })();

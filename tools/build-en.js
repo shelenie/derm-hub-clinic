@@ -196,6 +196,7 @@ const P = [
   ['alt="Оригінал повідомлення з відгуком"', 'alt="Original message with the review"'],
   ['aria-label="Нагору"', 'aria-label="Back to top"'],
   ['js/prices.js?', 'js/prices-en.js?'],
+  ['<span class="eb-m">Медична клініка · Бориспіль</span>', '<span class="eb-m">Medical clinic · Boryspil</span>'],
   ['<link rel="canonical" href="https://derm-hub-clinic.vercel.app/">', '<link rel="canonical" href="https://derm-hub-clinic.vercel.app/en.html">'],
   ['<meta property="og:locale" content="uk_UA">', '<meta property="og:locale" content="en_US">'],
   ['<meta property="og:title" content="Derm Hub — медична клініка: дерматологія, трихологія і косметологія у Борисполі">', '<meta property="og:title" content="Derm Hub — medical clinic: dermatology, trichology &amp; aesthetics in Boryspil">'],

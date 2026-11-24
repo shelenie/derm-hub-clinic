@@ -593,3 +593,20 @@ document.querySelectorAll('.ab-video').forEach(v => {
     return '<li><i>' + (n ? n.textContent : '') + '</i><div><b>' + (b ? b.textContent : '') + '</b><span>' + (sp ? sp.textContent : '') + '</span><em>' + (em ? em.textContent : '') + '</em></div></li>'; }).join('');
   p.after(ol);
 })();
+
+// телефон: відгуки й лікарі — як «До/після»: картка, що виходить за правий край, видна частково й м'яко притемнена
+['.team', '.rvx-grid'].forEach(sel => {
+  const r = document.querySelector(sel); if (!r) return;
+  const upd = () => {
+    const kids = [...r.children];
+    if (innerWidth > 700) { kids.forEach(ch => ch.style.opacity = ''); return; }
+    const rr = r.getBoundingClientRect().right, fade = Math.min(Math.max(innerWidth * .09, 70), 200);
+    kids.forEach(ch => { const b = ch.getBoundingClientRect(); if (!b.width) return; const o = b.right <= rr - 2 ? 1 : Math.max(.35, Math.min(1, (rr - fade - b.left) / Math.max(b.width - fade, 1) * .7 + .3)); ch.style.opacity = o < .999 ? o.toFixed(2) : ''; });
+  };
+  r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd();
+});
+
+// лікарі: лінія прогресу під картками (телефон)
+{ const r = document.querySelector('.team'), bar = document.querySelector('.team-bar i');
+  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
+    r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }

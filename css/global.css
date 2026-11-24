@@ -443,27 +443,41 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 /* ===== МОБІЛКА, раунд 3 ===== */
 /* без підпису OpenStreetMap на карті (усі версії) */
 .map-attr{display:none}
+.eb-m{display:none}
+.team-bar{display:none}
+@media (max-width:700px){.team-bar{display:block;margin-top:calc(var(--space-track) - 5px)}}
+@media (max-width:640px){.eb-d{display:none}.eb-m{display:inline}}
 .pyr-legend{display:none}
 @media (max-width:640px){
-  /* хіро: відео збільшене й зсунуте — права частина дівчини за краєм, голова одразу під меню; текст на склі внизу */
-  .hero-frame{height:max(100svh,calc(var(--head) + 105vw + 440px))}
-  .hero-frame>.hero-mob{top:calc(var(--head) + 4px - 110vw);left:0;right:auto;bottom:auto;width:175vw;height:311vw;max-width:none;object-fit:cover;object-position:0 0}
-  .hero-shade{background:linear-gradient(0deg,rgba(20,16,14,.55) 0%,rgba(20,16,14,0) 45%),linear-gradient(180deg,rgba(20,16,14,.3) 0,rgba(20,16,14,0) 130px)}
-  .hero-glass{left:8px;right:8px;bottom:8px;padding:22px 20px 20px}
-  .hero-glass .lead{margin-top:12px}
-  .hero-glass .hero-cta{margin-top:18px;gap:10px}
+  /* хіро: відео ще більше й правіше (ліве крило носа за краєм), голова під меню; усі тексти — ліворуч від обличчя на склі з розмиттям */
+  .hero-frame{height:max(calc(100svh - 20px),580px)}
+  .hero-frame>.hero-mob{top:calc(var(--head) + 4px - 129vw);left:-14vw;right:auto;bottom:auto;width:205vw;height:364.5vw;max-width:none;object-fit:cover;object-position:0 0}
+  .hero-shade{background:linear-gradient(90deg,rgba(24,18,16,.66) 0%,rgba(24,18,16,.42) 40%,rgba(24,18,16,.06) 70%,rgba(24,18,16,.06) 100%),linear-gradient(0deg,rgba(24,18,16,.68) 0%,rgba(24,18,16,.35) 26%,rgba(24,18,16,0) 46%),linear-gradient(180deg,rgba(24,18,16,.3) 0,rgba(24,18,16,0) 130px)}
+  /* без плашки: тексти прямо на відео ліворуч від обличчя, кнопки — внизу першого екрана */
+  .hero-glass{inset:calc(var(--head) + 10px + 20vw) 20px 22px 20px;width:auto;padding:0;display:flex;flex-direction:column;justify-content:flex-start;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .hero-glass .hg-body{display:contents}
+  .hero-glass .hg-body>:not(.hero-cta){max-width:60vw;text-shadow:0 1px 18px rgba(20,14,12,.35)}
+  .hero-glass .eyebrow{font-size:10px;letter-spacing:.18em;white-space:nowrap;max-width:none!important}
+  .hero-glass h1{margin-top:16px;font-size:clamp(36px,11vw,44px);line-height:1;max-width:74vw!important}
+  .hero-glass .lead{margin-top:calc(103.5vw - 142px);font-size:17px;line-height:1.42;max-width:74vw!important}
+  .hero-glass .hero-cta{margin-top:36px;gap:10px}
+  .hero-glass .hero-cta .btn{padding:16px 12px;font-size:15px}
+  /* друга кнопка — скло з розмиттям */
+  .hero-glass .hg-link{min-height:50px;padding:0 14px;font-size:11px;letter-spacing:.12em;gap:12px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(16px) saturate(130%);backdrop-filter:blur(16px) saturate(130%)}
+  .hero-glass .hg-link i,.hero-glass .hg-link:hover i{width:26px}
   /* верхня кнопка — акцентна */
   .hero-glass .btn-pop,.hero-glass .btn-pop:hover{background:var(--red);color:#fff;border-color:var(--red)}
 }
 @media (max-width:700px){
+  .dirs-row + .rail-bar{margin-top:calc(var(--space-track) - 5px)}
   /* популярні: Біорепарація (відео) перша, Ботулінотерапія — на її місці */
   .dirs-row .dir:nth-child(3){order:1}.dirs-row .dir:nth-child(2){order:2}.dirs-row .dir:nth-child(1){order:3}.dirs-row .dir:nth-child(n+4){order:4}
   /* відгуки — свайп убік; фон секції видно, як на комп'ютері */
   #reviews.frost::after{background:linear-gradient(180deg,rgba(248,246,244,.35),rgba(248,246,244,.12) 40%,rgba(248,246,244,.25))}
-  .rvx{background:rgba(255,255,255,.1);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;border-color:rgba(255,255,255,.45)}
+  .rvx{background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(10px) saturate(120%);backdrop-filter:blur(10px) saturate(120%);box-shadow:none;border-color:rgba(255,255,255,.45)}
   .rvx-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;gap:10px;margin-inline:-16px;padding:0 16px 6px;border-radius:0;background:none;border:0;box-shadow:none;scrollbar-width:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .rvx-grid::-webkit-scrollbar{display:none}
-  .rvx-grid .rvq,.rvx-grid .rvq-more,.rvx-grid .rvq:nth-child(n+5):not(.rvq-more){display:flex;flex:none;width:82%;scroll-snap-align:start;border:1px solid rgba(255,255,255,.8)!important;border-radius:22px;background:rgba(255,255,255,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .rvx-grid .rvq,.rvx-grid .rvq-more,.rvx-grid .rvq:nth-child(n+5):not(.rvq-more){display:flex;flex:none;width:min(82vw,380px);scroll-snap-align:start;border:1px solid rgba(255,255,255,.8)!important;border-radius:22px;background:rgba(255,255,255,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .rvx-more{display:none}
   /* прайс: фото вкладки — кадр під сюжет, підпис компактно внизу */
   .panel .svc.photo{min-height:0;aspect-ratio:4/5}
@@ -479,7 +493,6 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   /* картка-підказка: вища, сюжет у середині, текст на затемненні */
   .panel .svc-cta{display:flex;min-height:420px;justify-content:space-between}
   .svc.svc-cta::after,.svc.svc-cta:not(.wide)::after{background:linear-gradient(180deg,rgba(32,24,22,.85) 0%,rgba(32,24,22,.35) 34%,rgba(32,24,22,.1) 55%,rgba(32,24,22,.75) 100%)}
-  .panel[data-panel=care] .cta-doc{object-position:50% 60%!important}
   .panel[data-panel=inj] .cta-doc{object-position:50% 55%!important}
   .panel[data-panel=laser] .cta-doc{object-position:50% 45%!important}
   .panel[data-panel=derm] .cta-doc{object-position:50% 50%!important}
@@ -511,13 +524,21 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .pyr-legend span{font-size:14px;line-height:1.4;color:var(--ink2)}
   .pyr-legend em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
   /* «Про клініку»: відео — смугою 16:9 зверху, текст на склі під ним */
-  .ab-stage{background:#2b2523;padding-top:calc(56.25vw - 40px)}
-  .ab-video{inset:0 auto auto 0;width:100%;height:auto;aspect-ratio:16/9;clip-path:none;border-radius:var(--r-m) var(--r-m) 0 0;object-position:50% 50%}
-  .ab-stage::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(43,37,35,0) 0,rgba(43,37,35,0) calc(56.25vw - 120px),#2b2523 56.25vw)}
-  .ab-facts{row-gap:28px}
+  .ab-stage{background:#2b2523;padding-top:calc(100vw - 180px)}
+  .ab-lead{margin-top:20px}
+  .res-foot{margin-top:30px}
+  .ab-video{inset:0 auto auto 0;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;clip-path:none;border-radius:var(--r-m) var(--r-m) 0 0;object-position:50% 50%}
+  .ab-stage::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(43,37,35,0) 0,rgba(43,37,35,0) 45vw,rgba(43,37,35,.35) 68vw,rgba(43,37,35,.8) 88vw,#2b2523 100vw)}
+  .ab-treat{isolation:isolate;overflow:hidden}
+  .ab-treat::before{content:"";position:absolute;inset:-30px;z-index:-2;background:url(../img/about-poster.jpg?v=2) 30% 50%/cover;filter:blur(16px) saturate(115%)}
+  .ab-treat::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(40,30,27,.42),rgba(30,22,20,.62))}
+  .ab-facts{row-gap:36px}
   /* лікарі — відступ зліва при свайпі */
   .team{scroll-padding-inline:var(--pad)}
-  .team .doc{scroll-snap-align:start}
+  .team{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:calc(var(--pad) * -1);padding:0 var(--pad) 6px;scrollbar-width:none}
+  .team::-webkit-scrollbar{display:none}
+  .team .doc{flex:none;width:min(82vw,380px);height:auto;aspect-ratio:3/4;scroll-snap-align:start;transition:opacity .3s}
+  .rvx-grid .rvq{transition:opacity .3s}
   /* онлайн-запис: вужчий блок з кроками, форма — як була */
   .book-text{padding-inline:10px}
   /* контакти: емблема праворуч над заголовком, трохи більша */
@@ -526,4 +547,18 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   /* футер: «Онлайн-запис» і кнопка в один рядок */
   .fb-cta{flex-direction:row;align-items:center;justify-content:space-between;gap:16px}
   .fb-cta .fb-h{margin:0}
+}
+
+/* хіро на телефоні: ледь розмита ліва частина під текстом (обличчя різке) */
+@media (max-width:640px){
+  .hero-shade::after{content:'';position:absolute;inset:0;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);-webkit-mask-image:linear-gradient(90deg,#000 0,#000 30%,transparent 56%);mask-image:linear-gradient(90deg,#000 0,#000 30%,transparent 56%)}
+}
+/* меню на телефоні/планшеті: перемикач мови всередині, більше повітря */
+@media (max-width:1100px){
+  .head .head-r>.langs{display:none}
+  .head .mnav .langs{display:grid;align-self:flex-start;margin:22px 0 4px}
+  .head .mnav .langs button{padding:9px 16px;font-size:12px}
+  .mnav .mnav-tel{padding:16px 0 4px}
+  .mnav .btn{margin-top:26px}
+  .mnav{padding-bottom:28px}
 }

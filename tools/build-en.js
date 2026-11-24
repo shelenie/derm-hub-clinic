@@ -135,7 +135,7 @@ const P = [
   ['<li>Пори і тон</li><li>Ліфтинг обличчя і шиї</li><li>Тіло</li>', '<li>Pores and tone</li><li>Face and neck lifting</li><li>Body</li>'],
   // about
   ['(&nbsp;Про клініку&nbsp;)', '(&nbsp;About the clinic&nbsp;)'],
-  ['Доказова дерматологія <span class="it">і косметологія</span>', 'Evidence-based dermatology <span class="it">and aesthetics</span>'],
+  ['Доказова дерматологія, трихологія, <span class="it">апаратна та ін\'єкційна косметологія</span>', 'Evidence-based dermatology, hair and scalp care, <span class="it">laser and injectable aesthetics</span>'],
   ['Головний лікар — Тетяна Заєнц. У команді дерматологи, трихологи, косметологи і майстер з волосся.', 'Led by medical director Tetiana Zaients, our team includes dermatologists, trichologists, aesthetic physicians and a hair care specialist.'],
   ['<span class="b-k">Ліцензія</span><b>МОЗ України</b><small>процедури проводять лікарі</small>', '<span class="b-k">License</span><b>Ministry of Health of Ukraine</b><small>all treatments done by physicians</small>'],
   ['<span class="b-k">Діагностика родимок</span><b>FotoFinder</b><small>огляд родимок</small>', '<span class="b-k">Mole diagnostics</span><b>FotoFinder</b><small>mole mapping</small>'],

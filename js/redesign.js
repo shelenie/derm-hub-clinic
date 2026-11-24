@@ -629,7 +629,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
   const clear = () => { box.querySelectorAll('.htag').forEach(el => { el.classList.remove('in'); el.classList.add('out'); setTimeout(() => el.remove(), 800); }); svg.querySelectorAll('path').forEach(p => { p.classList.remove('in'); setTimeout(() => p.remove(), 800); }); };
   const render = () => {
     if (!mq.matches || !frozen || !items.length || document.hidden || scrollY > innerHeight * .8 || Date.now() - lastT < 2000) return;
-    const ld = fr.querySelector('.hero-glass .lead'), cta = fr.querySelector('.hero-glass .hero-cta'); if (!ld || !cta) return;
+    const ld = fr.querySelector('.hero-glass .slogan-m'), cta = fr.querySelector('.hero-glass .hero-cta'); if (!ld || !cta) return;
     const F = fr.getBoundingClientRect(), V = vid.getBoundingClientRect();
     const top = ld.getBoundingClientRect().bottom - F.top + 14, bot = cta.getBoundingClientRect().top - F.top - 14;
     if (bot - top < 70) return;

@@ -633,9 +633,10 @@ document.querySelectorAll('.ab-video').forEach(v => {
     const F = fr.getBoundingClientRect(), V = vid.getBoundingClientRect();
     const top = ld.getBoundingClientRect().bottom - F.top + 14, bot = cta.getBoundingClientRect().top - F.top - 14;
     if (bot - top < 70) return;
-    const n = i++ % items.length, [b, sp] = items[n], p = PT[n] || PT[0];
-    const px = V.left - F.left + p[0] * V.width, py = V.top - F.top + p[1] * V.height;
-    if (py < top - 8 || py > bot + 8) return;
+    let n, px, py, ok = false;
+    for (let t = 0; t < items.length && !ok; t++) { n = i++ % items.length; const p = PT[n] || PT[0]; px = V.left - F.left + p[0] * V.width; py = V.top - F.top + p[1] * V.height; ok = py >= top - 8 && py <= bot + 8; }
+    if (!ok) return;
+    const [b, sp] = items[n];
     lastT = Date.now();
     const el = document.createElement('div'); el.className = 'htag'; el.innerHTML = '<b></b><span></span>';
     el.firstChild.textContent = b; el.lastChild.textContent = sp; box.appendChild(el);
@@ -643,10 +644,11 @@ document.querySelectorAll('.ab-video').forEach(v => {
     const x = Math.round(Math.max(16, px - w - 34)); el.style.left = x + 'px';
     const y = Math.round(Math.min(Math.max(py - h / 2 - 30, top), bot - h)); el.style.top = y + 'px';
     const x1 = x + w, y1 = y + h / 2 + 6, len = Math.hypot(px - x1, py - y1);
-    const ln = document.createElementNS(NS, 'path'); ln.setAttribute('d', 'M' + x1 + ' ' + y1 + ' L' + px + ' ' + py);
-    ln.style.strokeDasharray = len; ln.style.strokeDashoffset = px > x1 ? len : 0; svg.appendChild(ln);
-    requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('in'); ln.classList.add('in'); ln.style.strokeDashoffset = 0; }));
-    setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); ln.classList.remove('in'); setTimeout(() => { el.remove(); ln.remove(); }, 800); }, 2300);
+    const ln = document.createElementNS(NS, 'path'); ln.setAttribute('d', 'M' + px + ' ' + py + ' L' + x1 + ' ' + y1);
+    ln.style.strokeDasharray = len; ln.style.strokeDashoffset = len; svg.appendChild(ln);
+    requestAnimationFrame(() => requestAnimationFrame(() => { ln.classList.add('in'); ln.style.strokeDashoffset = 0; }));
+    setTimeout(() => el.classList.add('in'), 650);
+    setTimeout(() => { el.classList.remove('in'); el.classList.add('out'); ln.classList.remove('in'); setTimeout(() => { el.remove(); ln.remove(); }, 800); }, 2700);
   };
   setInterval(render, 2600);
   const freeze = () => { vid.pause(); frozen = true; y0 = scrollY; setTimeout(render, 150); };

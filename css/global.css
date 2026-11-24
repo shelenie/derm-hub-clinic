@@ -446,7 +446,7 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 .eb-m{display:none}
 .team-bar{display:none}
 @media (max-width:700px){.team-bar{display:block;margin-top:calc(var(--space-track) - 5px)}}
-@media (max-width:640px){.eb-d{display:none}.eb-m{display:inline}}
+
 .pyr-legend{display:none}
 @media (max-width:640px){
   /* хіро: відео ще більше й правіше (ліве крило носа за краєм), голова під меню; усі тексти — ліворуч від обличчя на склі з розмиттям */
@@ -454,10 +454,10 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .hero-frame>.hero-mob{top:calc(var(--head) + 124px - 144.2vw);left:0;right:auto;bottom:auto;width:176vw;height:313vw;max-width:none;object-fit:cover;object-position:0 0}
   .hero-shade{background:linear-gradient(90deg,rgba(24,18,16,.66) 0%,rgba(24,18,16,.42) 40%,rgba(24,18,16,.06) 70%,rgba(24,18,16,.06) 100%),linear-gradient(0deg,rgba(24,18,16,.68) 0%,rgba(24,18,16,.35) 26%,rgba(24,18,16,0) 46%),linear-gradient(180deg,rgba(24,18,16,.3) 0,rgba(24,18,16,0) 130px)}
   /* без плашки: тексти прямо на відео ліворуч від обличчя, кнопки — внизу першого екрана */
-  .hero-glass{inset:calc(var(--head) + 14px) 20px 76px 20px;width:auto;padding:0;display:flex;flex-direction:column;justify-content:flex-start;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .hero-glass{inset:calc(var(--head) + 14px) 20px 58px 20px;width:auto;padding:0;display:flex;flex-direction:column;justify-content:flex-start;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .hero-glass .hg-body{display:contents}
   .hero-glass .hg-body>:not(.hero-cta){max-width:60vw;text-shadow:0 1px 18px rgba(20,14,12,.35)}
-  .hero-glass .eyebrow{font-size:10px;letter-spacing:.18em;white-space:nowrap;max-width:none!important}
+  .hero-glass .eyebrow{font-size:10px;letter-spacing:.16em;line-height:1.6;white-space:normal;max-width:80vw!important}
   .hero-glass h1{margin-top:16px;font-size:clamp(36px,11vw,44px);line-height:1;max-width:74vw!important}
   .hero-glass .lead{margin-top:16px;font-size:17px;line-height:1.42;max-width:74vw!important}
   .hero-glass .hero-cta{margin-top:auto;gap:10px}
@@ -576,4 +576,13 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .htag.out{opacity:0;transform:translateY(-8px) scale(.98)}
   .htag b{font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap}
   .htag span{font-size:11px;line-height:1.2;color:rgba(255,255,255,.78);white-space:nowrap}
+}
+
+/* хіро: на телефоні заголовок — назва клініки, слоган під ним; на комп'ютері — як було */
+.h1-m,.slogan-m{display:none}
+@media (max-width:640px){
+  .hero-glass .h1-d{display:none}
+  .hero-glass .h1-m{display:inline;letter-spacing:.02em}
+  .hero-glass .slogan-m{display:block;margin:10px 0 0;font-size:24px;font-weight:300;line-height:1.15;color:rgba(255,255,255,.86)}
+  .hero-glass .slogan-m .it{color:var(--red)}
 }

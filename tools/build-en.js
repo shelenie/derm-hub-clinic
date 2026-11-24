@@ -13,7 +13,7 @@ const DOC = {
 const P = [
   // head / meta
   ['<html lang="uk"', '<html lang="en"'],
-  ['<title>Derm Hub — медична клініка: дерматологія, трихологія і косметологія у Борисполі</title>', '<title>Derm Hub — dermatology & aesthetics in Boryspil</title>'],
+  ['<title>Derm Hub — дерматологія і косметологія у Борисполі</title>', '<title>Derm Hub — dermatology & aesthetics in Boryspil</title>'],
   ['Дермато-косметологічний центр у Борисполі: доказова дерматологія, трихологія, апаратна та ін\'єкційна косметологія. Ціни на сайті, онлайн-запис.', 'Dermatology and aesthetics clinic in Boryspil, Ukraine: evidence-based dermatology, hair and scalp care, laser and injectable treatments. Transparent prices and online booking.'],
   ['Derm Hub — на головну', 'Derm Hub — home'],
   ['aria-label="Розділи"', 'aria-label="Sections"'],
@@ -199,8 +199,8 @@ const P = [
   ['<span class="eb-m">Медична клініка · Бориспіль</span>', '<span class="eb-m">Medical clinic · Boryspil</span>'],
   ['<link rel="canonical" href="https://derm-hub-clinic.vercel.app/">', '<link rel="canonical" href="https://derm-hub-clinic.vercel.app/en.html">'],
   ['<meta property="og:locale" content="uk_UA">', '<meta property="og:locale" content="en_US">'],
-  ['<meta property="og:title" content="Derm Hub — медична клініка: дерматологія, трихологія і косметологія у Борисполі">', '<meta property="og:title" content="Derm Hub — medical clinic: dermatology, trichology &amp; aesthetics in Boryspil">'],
-  ['<meta property="og:description" content="Доказова дерматологія, трихологія, апаратна та ін\'єкційна косметологія. Ціни на сайті, онлайн-запис.">', '<meta property="og:description" content="Evidence-based dermatology, hair and scalp care, laser and injectable treatments. Transparent prices and online booking.">'],
+  ['<meta property="og:title" content="Derm Hub — дерматологія, трихологія, косметологія">', '<meta property="og:title" content="Derm Hub — dermatology, trichology &amp; aesthetics">'],
+  ['<meta property="og:description" content="Медична клініка у Борисполі: доказова дерматологія, трихологія, апаратна та ін\'єкційна косметологія. Ціни на сайті, онлайн-запис.">', '<meta property="og:description" content="Medical clinic in Boryspil: evidence-based dermatology, hair and scalp care, laser and injectable treatments. Transparent prices and online booking.">'],
   ['<meta property="og:url" content="https://derm-hub-clinic.vercel.app/">', '<meta property="og:url" content="https://derm-hub-clinic.vercel.app/en.html">'],
   ['og-uk.jpg?v=2', 'og-en.jpg?v=2'],
   ['<meta property="og:image:alt" content="Derm Hub — медична клініка: дерматологія, трихологія і косметологія у Борисполі">', '<meta property="og:image:alt" content="Derm Hub — medical clinic: dermatology, trichology &amp; aesthetics in Boryspil">'],

@@ -621,7 +621,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
   const items = [...document.querySelectorAll('.callouts .co .lb')].map(l => [(l.querySelector('b') || {}).textContent || '', ((l.querySelector('span') || {}).textContent || '').split(' · ')[0]]).filter(x => x[0]);
   if (still) return;
   // зони на кадрі із заплющеними очима (частки ширини/висоти): мімічні, дрібні, зневоднена, судини, рубці, губи, пори, овал
-  const PT = [[.458, .453], [.358, .547], [.396, .594], [.444, .574], [.389, .648], [.451, .634], [.417, .559], [.354, .68]];
+  const PT = [[.458, .453], [.358, .547], [.396, .594], [.444, .574], [.389, .648], [.451, .634], [.417, .559], [.392, .686]];
   const NS = 'http://www.w3.org/2000/svg';
   const box = document.createElement('div'); box.className = 'hero-tags'; box.setAttribute('aria-hidden', 'true');
   const svg = document.createElementNS(NS, 'svg'); box.appendChild(svg); fr.appendChild(box);
@@ -661,3 +661,8 @@ document.querySelectorAll('.ab-video').forEach(v => {
   addEventListener('touchstart', wake, { passive: true });
   addEventListener('pointerdown', wake, { passive: true });
 })();
+
+// відгуки на телефоні: лінія прокрутки
+{ const r = document.querySelector('.rvx-grid'), bar = document.querySelector('.rvx-bar i');
+  if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
+    r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }

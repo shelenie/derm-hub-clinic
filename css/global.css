@@ -589,3 +589,12 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 
 /* хіро на телефоні: без підзаголовка (перенесено в заголовок «Про клініку») */
 @media (max-width:640px){.hero-glass .lead{display:none}}
+
+/* відгуки: лінія прокрутки над кнопкою (лише телефон) */
+.rvx-bar{display:none}
+@media (max-width:700px){
+  .rvx-bar{display:block;margin-top:calc(var(--space-track) - 5px)}
+  .rvx-bar + .rvx-foot{margin-top:22px}
+  /* до/після: підпис без запасу на другий рядок лікаря — без зайвої порожнечі під карткою */
+  .ba-sec .case-cap{min-height:0}
+}

@@ -255,7 +255,7 @@ document.querySelectorAll('.rail-wrap').forEach(w => {
     if (next) next.disabled = r.scrollLeft > max - 4;
     // картки, що виходять за правий край, м'яко тануть (сильніше — що далі за край)
     const rr = r.getBoundingClientRect().right, fade = Math.min(Math.max(innerWidth * .09, 70), 200);
-    [...r.children].forEach(ch => { const b = ch.getBoundingClientRect(); const o = b.right <= rr - 2 ? 1 : Math.max(r.closest('.dirs') ? 1 : .35, Math.min(1, (rr - fade - b.left) / Math.max(b.width - fade, 1) * .7 + .3)); ch.style.opacity = o < .999 ? o.toFixed(2) : ''; });
+    dimRail(r, r.closest('.dirs') ? 1 : .35);
   };
   const step = () => Math.max(r.clientWidth * .75, 280);
   prev && prev.addEventListener('click', () => r.scrollBy({ left: -step() }));
@@ -573,8 +573,7 @@ document.querySelectorAll('.ab-video').forEach(v => {
   const upd = () => {
     const kids = [...r.children];
     if (innerWidth > 700) { kids.forEach(ch => ch.style.opacity = ''); return; }
-    const rr = r.getBoundingClientRect().right, fade = Math.min(Math.max(innerWidth * .09, 70), 200);
-    kids.forEach(ch => { const b = ch.getBoundingClientRect(); if (!b.width) return; const o = b.right <= rr - 2 ? 1 : Math.max(.35, Math.min(1, (rr - fade - b.left) / Math.max(b.width - fade, 1) * .7 + .3)); ch.style.opacity = o < .999 ? o.toFixed(2) : ''; });
+    dimRail(r, .35);
   };
   r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd();
 });
@@ -629,8 +628,9 @@ document.querySelectorAll('.ab-video').forEach(v => {
   vid.addEventListener('loadedmetadata', () => { if (mq.matches && vid.currentTime < START) vid.currentTime = START; });
   vid.addEventListener('play', () => { if (!mq.matches) return; vid.playbackRate = RATE; frozen = false; clear(); requestAnimationFrame(watch); });
   vid.addEventListener('ended', () => { if (mq.matches && !frozen) freeze(); });
-  const wake = () => { if (!mq.matches || !frozen) return; frozen = false; clear(); vid.currentTime = START; vid.play().catch(() => {}); };
+  const wake = () => { if (!mq.matches || !(frozen || vid.paused)) return; frozen = false; clear(); vid.currentTime = START; vid.play().catch(() => {}); };
   addEventListener('scroll', () => { if (Math.abs(scrollY - y0) > 2) wake(); }, { passive: true });
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && mq.matches && (frozen || vid.paused)) wake(); }), { threshold: .3 }).observe(fr);
   addEventListener('touchstart', wake, { passive: true });
   addEventListener('pointerdown', wake, { passive: true });
 })();
@@ -648,3 +648,12 @@ document.querySelectorAll('.ab-video').forEach(v => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return show();
   new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { show(); o.disconnect(); } }), { threshold: .15 }).observe(st);
 })();
+
+// каруселі: картки, що виходять за правий чи лівий край, м'яко притемнені (однаково з обох боків)
+function dimRail(r, minO) {
+  const R = r.getBoundingClientRect(), fade = Math.min(Math.max(innerWidth * .09, 70), 200);
+  [...r.children].forEach(ch => { const b = ch.getBoundingClientRect(); if (!b.width) return; let o = 1;
+    if (b.right > R.right + 2) o = (R.right - fade - b.left) / Math.max(b.width - fade, 1) * .7 + .3;
+    else if (b.left < R.left + parseFloat(getComputedStyle(r).paddingLeft) - 2) o = (b.right - fade - R.left - parseFloat(getComputedStyle(r).paddingLeft)) / Math.max(b.width - fade, 1) * .7 + .3;
+    o = Math.max(minO, Math.min(1, o)); ch.style.opacity = o < .999 ? o.toFixed(2) : ''; });
+}

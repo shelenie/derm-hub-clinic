@@ -206,8 +206,12 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 // мобільне меню
 const head = document.querySelector('.head'), burger = document.querySelector('.burger');
 if (burger) {
-  burger.onclick = () => { const o = head.classList.toggle('open'); burger.setAttribute('aria-expanded', o); };
-  document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', () => { head.classList.remove('open'); burger.setAttribute('aria-expanded', false); }));
+  // поки меню відкрите — сайт під ним затемнений, не гортається й не клікається (дотик по затемненню закриває меню)
+  const dim = document.createElement('div'); dim.className = 'menu-dim'; document.body.appendChild(dim);
+  const setMenu = o => { head.classList.toggle('open', o); burger.setAttribute('aria-expanded', o); document.documentElement.classList.toggle('menu-open', o); };
+  burger.onclick = () => setMenu(!head.classList.contains('open'));
+  dim.addEventListener('click', () => setMenu(false));
+  document.querySelectorAll('.mnav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 }
 // шапка: прозора поверх хіро → скляна «пілюля» після хіро
 const heroFrame = document.querySelector('.hero-frame');
@@ -440,7 +444,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
 if (matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const cur = document.createElement('div'); cur.className = 'cur off'; cur.setAttribute('aria-hidden', 'true'); document.body.appendChild(cur);
   document.documentElement.classList.add('has-cur');
-  const HOT = 'a,button,select,label,summary,[role=button],.co .pt,.tab,.slot,.langs,.pyr-tier';
+  const HOT = 'a,button,select,label,summary,[role=button],.co .pt,.tab,.slot,.langs';
   const TXT = 'input:not([type=checkbox]):not([type=radio]),textarea';
   addEventListener('pointermove', e => {
     cur.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
@@ -452,31 +456,9 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(pref
   document.addEventListener('pointerenter', () => cur.classList.remove('off'));
 }
 
-// піраміда догляду: на дотик — показати частоту; на телефоні частота під текстом
-document.querySelectorAll('.pyr-tier').forEach(t => {
-  const fq = t.querySelector('.pyr-badge em'); t.querySelector('.pyr-txt').dataset.fq = fq ? fq.textContent : '';
-  t.addEventListener('click', () => { const on = !t.classList.contains('on'); document.querySelectorAll('.pyr-tier.on').forEach(x => x.classList.remove('on')); t.classList.toggle('on', on); });
-});
-
 // Про клініку: ?ab=2 — показати варіант без обох карток (для порівняння)
 if (/[?&]ab=2\b/.test(location.search)) document.documentElement.classList.add('ab-v2');
 
-// піраміда: при кожному заході на екран яруси виростають знизу догори, потім ярус 01 на мить показує частоту
-document.querySelectorAll('.pyr').forEach(p => {
-  const sec = p.closest('section');
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { if (sec) sec.classList.add('cp-in'); return; }
-  const tiers = [...p.querySelectorAll('.pyr-tier')]; tiers.forEach((t, k) => t.style.setProperty('--i', tiers.length - 1 - k));
-  p.classList.add('pyr-anim'); let tm;
-  new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting && e.intersectionRatio >= (innerWidth <= 700 ? .12 : .45)) {
-      if (p.classList.contains('pyr-in')) return;
-      p.classList.add('pyr-in'); if (sec) sec.classList.add('cp-in');
-      if (innerWidth <= 700) return;
-      const last = tiers[tiers.length - 1];
-      tm = setTimeout(() => { if (!p.querySelector('.pyr-tier.on, .pyr-tier:hover')) { last.classList.add('on'); tm = setTimeout(() => last.classList.remove('on'), 2200); } }, tiers.length * 200 + 900);
-    } else if (!e.isIntersecting) { p.classList.remove('pyr-in'); if (sec) sec.classList.remove('cp-in'); clearTimeout(tm); tiers.forEach(t => t.classList.remove('on')); }
-  }), { threshold: [0, .12, .45] }).observe(p);
-});
 
 // відео у «Про клініку»: грає лише коли секцію видно; на телефоні й при «менше анімацій» — заставка
 document.querySelectorAll('.ab-video').forEach(v => {
@@ -584,15 +566,6 @@ document.querySelectorAll('.ab-video').forEach(v => {
 })();
 
 
-// телефон: під пірамідою — легенда з поясненнями (у самій піраміді лише назви ярусів)
-(() => {
-  const p = document.querySelector('.pyr'); if (!p) return;
-  const tiers = [...p.querySelectorAll('.pyr-tier')].reverse();
-  const ol = document.createElement('ol'); ol.className = 'pyr-legend';
-  ol.innerHTML = tiers.map(t => { const n = t.querySelector('.pyr-badge i'), b = t.querySelector('.pyr-txt b'), sp = t.querySelector('.pyr-txt span'), em = t.querySelector('.pyr-badge em');
-    return '<li><i>' + (n ? n.textContent : '') + '</i><div><b>' + (b ? b.textContent : '') + '</b><span>' + (sp ? sp.textContent : '') + '</span><em>' + (em ? em.textContent : '') + '</em></div></li>'; }).join('');
-  p.after(ol);
-})();
 
 // телефон: відгуки й лікарі — як «До/після»: картка, що виходить за правий край, видна частково й м'яко притемнена
 ['.team', '.rvx-grid'].forEach(sel => {
@@ -666,3 +639,12 @@ document.querySelectorAll('.ab-video').forEach(v => {
 { const r = document.querySelector('.rvx-grid'), bar = document.querySelector('.rvx-bar i');
   if (r && bar) { const upd = () => { const max = r.scrollWidth - r.clientWidth, k = max > 0 ? r.scrollLeft / max : 0, part = max > 0 ? r.clientWidth / r.scrollWidth : 1; bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; };
     r.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); addEventListener('load', upd); upd(); } }
+
+
+// ПЛАН ДОГЛЯДУ: сходинки з'являються по черзі, коли секцію видно
+(() => {
+  const sec = document.getElementById('care-plan'), st = sec && sec.querySelector('.cpa'); if (!st) return;
+  const show = () => { st.classList.add('in'); sec.classList.add('cp-in'); setTimeout(() => st.classList.add('done'), 1500); };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return show();
+  new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { show(); o.disconnect(); } }), { threshold: .15 }).observe(st);
+})();

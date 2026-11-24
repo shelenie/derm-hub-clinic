@@ -138,48 +138,14 @@
 .ab-pyr{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(32px,4vw,80px);align-items:center;margin-top:var(--space-section)}
 .pyr-copy .h-l{margin:14px 0 18px}
 .pyr-copy .muted{max-width:30em;margin:0}
-.pyr{position:relative;display:flex;flex-direction:column;gap:6px;width:min(100%,860px);aspect-ratio:1/.8;margin-right:clamp(0px,6vw,120px);justify-self:center}
-.pyr-tier{position:relative;flex:calc(var(--b) - var(--a)) 1 0;min-height:0;pointer-events:none;outline:none}
-.pyr-shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
-.pyr-shape polygon{fill:#fff;stroke:#E4D7D1;stroke-width:3;vector-effect:non-scaling-stroke;stroke-linejoin:round;pointer-events:auto;transition:fill .3s,stroke .3s}
-.pyr-txt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:var(--tw);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;pointer-events:auto}
-.pyr-tier:first-child .pyr-txt{top:auto;bottom:12%;transform:translateX(-50%)}
-.pyr-ic{width:clamp(20px,1.6vw,28px);height:auto;fill:none;stroke:var(--ink2);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;opacity:.7;margin-bottom:4px}
-.pyr-txt b{font-weight:600;font-size:clamp(11px,.85vw,14px);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);line-height:1.25}
-.pyr-txt span{font-size:clamp(12px,.9vw,15px);line-height:1.35;color:var(--ink2)}
-.pyr-pin{position:absolute;top:50%;width:0;height:0}
-.pyr-l .pyr-pin{left:calc(50% - var(--m) * 50%)}
-.pyr-r .pyr-pin{left:calc(50% + var(--m) * 50%)}
-.pyr-badge{--d:clamp(44px,3.4vw,58px);position:absolute;top:calc(var(--d) / -2);height:var(--d);display:flex;align-items:center;border-radius:999px;background:var(--ink);color:#fff;pointer-events:auto;box-shadow:0 8px 24px rgba(30,20,18,.18);transition:background .3s}
-.pyr-l .pyr-badge{right:calc(var(--d) / -2);flex-direction:row-reverse}
-.pyr-r .pyr-badge{left:calc(var(--d) / -2)}
-.pyr-badge i{flex:none;width:var(--d);text-align:center;font-style:normal;font-weight:500;font-size:clamp(17px,1.3vw,22px)}
-.pyr-badge em{font-style:normal;white-space:nowrap;overflow:hidden;max-width:0;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;transition:max-width .5s cubic-bezier(.2,.7,.2,1),padding .5s}
-.pyr-tier:hover .pyr-shape,.pyr-tier.on .pyr-shape,.pyr-tier:focus-visible .pyr-shape{transform:scale(1.035)}
-.pyr-tier:hover polygon,.pyr-tier.on polygon,.pyr-tier:focus-visible polygon{fill:#FBF6F3;stroke:#D9C6BE}
-.pyr-tier:hover .pyr-badge,.pyr-tier.on .pyr-badge,.pyr-tier:focus-visible .pyr-badge{background:var(--red)}
-.pyr-tier:hover .pyr-badge em,.pyr-tier.on .pyr-badge em,.pyr-tier:focus-visible .pyr-badge em{max-width:320px}
-.pyr-r:hover .pyr-badge em,.pyr-r.on .pyr-badge em,.pyr-r:focus-visible .pyr-badge em{padding-right:24px}
-.pyr-l:hover .pyr-badge em,.pyr-l.on .pyr-badge em,.pyr-l:focus-visible .pyr-badge em{padding-left:24px}
 @media (max-width:1100px){
   .ab-pyr{grid-template-columns:1fr}
-  .pyr{width:min(100%,720px);margin-right:0}
 }
 }
 
 #care-plan .ab-pyr{margin-top:0}
 
 /* піраміда: шар при ховері розкривається вшир (як у референсі), бордери — фірмовий червоний */
-.pyr-tier{--sx:1}
-.pyr-tier:hover,.pyr-tier.on,.pyr-tier:focus-visible{--sx:1.16;z-index:2}
-.pyr-shape,.ab-plan .pyr-shape{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.pyr-tier:hover .pyr-shape,.pyr-tier.on .pyr-shape,.pyr-tier:focus-visible .pyr-shape{transform:scale(var(--sx),1.03)}
-.pyr-pin{transition:left .5s cubic-bezier(.2,.7,.2,1)}
-.pyr-l .pyr-pin{left:calc(50% - var(--m) * 50% * var(--sx))}
-.pyr-r .pyr-pin{left:calc(50% + var(--m) * 50% * var(--sx))}
-.pyr-shape polygon,.ab-plan .pyr-shape polygon{stroke:var(--red);stroke-width:3}
-.pyr-tier:hover polygon,.pyr-tier.on polygon,.pyr-tier:focus-visible polygon,
-.ab-plan .pyr-tier:hover polygon,.ab-plan .pyr-tier.on polygon,.ab-plan .pyr-tier:focus-visible polygon{fill:#fff;stroke:var(--red);stroke-width:4}
 
 /* акцент у заголовку піраміди */
 #care-plan .h-l .it{color:var(--red)}
@@ -201,10 +167,6 @@ html.ab-v2 .ab-treat{background:none;border:0;box-shadow:none;-webkit-backdrop-f
 }
 @media (min-width:1101px) and (max-width:1400px){
   #care-plan .pyr-copy{max-width:19em}
-  .pyr-tier:hover,.pyr-tier.on,.pyr-tier:focus-visible{--sx:1.1}
-  .pyr-badge em{font-size:11px;letter-spacing:.08em}
-  .pyr-r:hover .pyr-badge em,.pyr-r.on .pyr-badge em,.pyr-r:focus-visible .pyr-badge em{padding-right:16px}
-  .pyr-l:hover .pyr-badge em,.pyr-l.on .pyr-badge em,.pyr-l:focus-visible .pyr-badge em{padding-left:16px}
 }
 
 /* Про клініку: спокійніший фон — приглушені квіти, щоб червоним лишалась лише кнопка */
@@ -219,19 +181,9 @@ html.ab-v2 .ab-treat{background:none;border:0;box-shadow:none;-webkit-backdrop-f
 
 /* піраміда: однаковий відступ під останнім рядком у кожному ярусі */
 @media (min-width:701px){
-  .pyr-txt,.pyr-tier:first-child .pyr-txt{top:auto;bottom:clamp(12px,1.5vw,22px);transform:translateX(-50%)}
-  .pyr-ic{width:clamp(22px,1.7vw,30px);stroke-width:1.2;margin-bottom:6px}
 }
 /* на менших екранах іконка — поруч із назвою ярусу, щоб текст вміщався у висоту */
 @media (min-width:701px) and (max-width:1700px){
-  .pyr-txt{display:grid;grid-template-columns:auto auto;column-gap:8px;row-gap:4px;align-items:center;justify-content:center}
-  .pyr-ic{grid-column:1;grid-row:1;margin:0;width:clamp(18px,1.4vw,24px)}
-  .pyr-txt b{grid-column:2;grid-row:1}
-  .pyr-txt span{grid-column:1 / -1;grid-row:2}
-  .pyr-tier:first-child .pyr-txt{grid-template-columns:auto}
-  .pyr-tier:first-child .pyr-ic{grid-column:1;grid-row:1;justify-self:center}
-  .pyr-tier:first-child .pyr-txt b{grid-column:1;grid-row:2}
-  .pyr-tier:first-child .pyr-txt span{grid-column:1;grid-row:3}
 }
 
 /* ── піраміда в стилі сайту ── */
@@ -239,23 +191,10 @@ html.ab-v2 .ab-treat{background:none;border:0;box-shadow:none;-webkit-backdrop-f
 @media (min-width:701px){
   .pyr-badge{--d:clamp(48px,3.8vw,64px);background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
     border:1px solid rgba(193,38,44,.45);color:var(--red);box-shadow:0 10px 30px rgba(60,30,25,.14);transition:background .35s,color .35s,border-color .35s}
-  .pyr-badge i{font-weight:200;font-size:clamp(20px,1.6vw,28px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-  .pyr-tier:hover .pyr-badge,.pyr-tier.on .pyr-badge,.pyr-tier:focus-visible .pyr-badge{background:var(--red);border-color:var(--red);color:#fff}
-  .pyr-badge em{font-weight:400;letter-spacing:var(--label-ls)}
 }
 /* назви ярусів — як мітки по сайту («Ліцензія», «Діагностика родимок») */
-.pyr-txt b{font-family:var(--sans);font-size:var(--label-fs);font-weight:500;letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--ink3)}
-.pyr-txt span{color:var(--ink);font-size:clamp(13px,.95vw,16px)}
 /* поява: яруси виростають знизу догори, потім підсвічується ярус 1 */
-.pyr.pyr-anim .pyr-tier{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i, 0) * 130ms)}
-.pyr.pyr-anim.pyr-in .pyr-tier{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.pyr.pyr-anim .pyr-tier{opacity:1;transform:none;transition:none}}
 @media (min-width:701px) and (max-width:1700px){
-  .pyr-txt{grid-template-columns:1fr auto auto 1fr}
-  .pyr-ic{grid-column:2}
-  .pyr-txt b{grid-column:3;justify-self:start}
-  .pyr-tier:first-child .pyr-txt{grid-template-columns:1fr}
-  .pyr-tier:first-child .pyr-ic,.pyr-tier:first-child .pyr-txt b,.pyr-tier:first-child .pyr-txt span{grid-column:1;justify-self:center}
 }
 @media (min-width:1101px){
   #care-plan .ab-pyr{grid-template-columns:minmax(0,1fr) minmax(0,min(56%,820px))}
@@ -274,8 +213,6 @@ html.ab-v2 .ab-treat{background:none;border:0;box-shadow:none;-webkit-backdrop-f
 /* онлайн-запис: фон — квіти, що були в «Про клініку» */
 .booking::before{background:url(../img/bg-about.jpg) center 40%/cover}
 /* піраміда: виразніша поява ярусів при скролі */
-.pyr.pyr-anim .pyr-tier{opacity:0;transform:translateY(46px) scale(.92);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.75,.2,1);transition-delay:calc(var(--i, 0) * 200ms)}
-.pyr.pyr-anim.pyr-in .pyr-tier{opacity:1;transform:none}
 .pyr-copy{transition:opacity .8s ease,transform .9s cubic-bezier(.2,.75,.2,1)}
 #care-plan:not(.cp-in) .pyr-copy{opacity:0;transform:translateY(24px)}
 @media (prefers-reduced-motion:reduce){#care-plan:not(.cp-in) .pyr-copy{opacity:1;transform:none}}
@@ -447,7 +384,6 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 .team-bar{display:none}
 @media (max-width:700px){.team-bar{display:block;margin-top:calc(var(--space-track) - 5px)}}
 
-.pyr-legend{display:none}
 @media (max-width:640px){
   /* хіро: відео ще більше й правіше (ліве крило носа за краєм), голова під меню; усі тексти — ліворуч від обличчя на склі з розмиттям */
   .hero-frame{height:max(calc(100svh + 54px),654px)}
@@ -458,7 +394,7 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .hero-glass .hg-body{display:contents}
   .hero-glass .hg-body>:not(.hero-cta){max-width:60vw;text-shadow:0 1px 18px rgba(20,14,12,.35)}
   .hero-glass .eyebrow{font-size:10px;letter-spacing:.16em;line-height:1.6;white-space:normal;max-width:80vw!important}
-  .hero-glass h1{margin-top:16px;font-size:clamp(42px,13vw,54px);line-height:1;max-width:74vw!important}
+  .hero-glass h1{margin-top:16px;font-size:clamp(40px,12.4vw,54px);line-height:1;max-width:none!important}
   .hero-glass .lead{margin-top:16px;font-size:17px;line-height:1.42;max-width:74vw!important}
   .hero-glass .hero-cta{margin-top:auto;gap:10px}
   .hero-glass .hero-cta .btn{padding:16px 12px;font-size:15px}
@@ -506,23 +442,7 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .ba-h img{object-fit:contain}
   /* план догляду: текст одразу, яруси швидше */
   #care-plan:not(.cp-in) .pyr-copy{opacity:1;transform:none}
-  .pyr.pyr-anim .pyr-tier{transition-delay:calc(var(--i, 0) * 70ms)}
   /* піраміда: зменшена оригінальна форма з назвами ярусів, пояснення — списком під нею */
-  .pyr{width:100%;margin:6px 0 0}
-  .pyr-ic,.pyr-txt span,.pyr-badge em{display:none}
-  .pyr-txt b{font-size:10px;letter-spacing:.08em;line-height:1.2}
-  .pyr-tier:first-child .pyr-txt{bottom:10%}
-  .pyr-badge,.pyr-l .pyr-badge,.pyr-r .pyr-badge{--d:30px}
-  .pyr-l .pyr-badge{right:calc(var(--d) / -2)}.pyr-r .pyr-badge{left:calc(var(--d) / -2)}
-  .pyr-badge i{font-size:13px}
-  .pyr-legend{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:0}
-  .pyr-legend li{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}
-  .pyr-legend li:last-child{border-bottom:1px solid var(--line)}
-  .pyr-legend i{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;font-style:normal;font-size:13px;font-weight:500}
-  .pyr-legend div{display:flex;flex-direction:column;gap:3px}
-  .pyr-legend b{font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
-  .pyr-legend span{font-size:14px;line-height:1.4;color:var(--ink2)}
-  .pyr-legend em{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
   /* «Про клініку»: відео — смугою 16:9 зверху, текст на склі під ним */
   .ab-stage{background:#2b2523;padding-top:calc(100vw - 210px)}
   .ab-lead{margin-top:34px}
@@ -531,8 +451,8 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .ab-video{inset:0 auto auto 0;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;clip-path:none;border-radius:var(--r-m) var(--r-m) 0 0;object-position:50% 50%}
   .ab-stage::before{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(180deg,transparent 28vw,#000 62vw);mask-image:linear-gradient(180deg,transparent 28vw,#000 62vw);background:linear-gradient(180deg,rgba(43,37,35,0) 0,rgba(43,37,35,0) 28vw,rgba(43,37,35,.5) 55vw,rgba(43,37,35,.85) 80vw,#2b2523 100vw)}
   .ab-treat{isolation:isolate;overflow:hidden}
-  .ab-treat::before{content:"";position:absolute;inset:-30px;z-index:-2;background:url(../img/bg-cells.jpg) 50% 50%/cover;filter:blur(5px) saturate(110%)}
-  .ab-treat::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(36,20,20,.52),rgba(26,16,16,.7))}
+  .ab-treat::before{content:"";position:absolute;inset:-30px;z-index:-2;background:url(../img/bg-sphere.jpg) 40% 50%/cover;filter:blur(3px) saturate(115%)}
+  .ab-treat::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(30,22,22,.45),rgba(22,16,16,.66))}
   .ab-facts{row-gap:36px}
   /* лікарі — відступ зліва при свайпі */
   .team{scroll-padding-inline:var(--pad)}
@@ -583,7 +503,7 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
 .h1-m,.slogan-m{display:none}
 @media (max-width:640px){
   .hero-glass .h1-d{display:none}
-  .hero-glass .h1-m{display:inline;letter-spacing:.02em}
+  .hero-glass .h1-m{display:inline-block;white-space:nowrap;letter-spacing:.02em;background:linear-gradient(105deg,#fff 0%,#fff 38%,#EDE3DE 62%,rgba(236,224,218,.72) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
   .hero-glass .slogan-m{display:block;margin:20px 0 0;font-size:24px;font-weight:300;line-height:1.15;color:rgba(255,255,255,.86)}
   .hero-glass .slogan-m .it{color:var(--red)}
 }
@@ -601,4 +521,56 @@ html.ba-a .ba-sec{border-radius:clamp(28px,3vw,var(--r-xl)) clamp(28px,3vw,var(-
   .ba-sec .res-row{align-items:stretch}
   .ba-sec .res-row .case{display:flex;flex-direction:column}
 }
-@media (max-width:640px){.hero-glass .slogan-m .nw{white-space:nowrap}}
+@media (max-width:640px){.hero-glass .slogan-m .nw{display:block;white-space:nowrap}}
+
+/* відкрите меню: затемнення під ним, сторінка не гортається */
+.menu-dim{position:fixed;inset:0;z-index:29;background:rgba(18,12,11,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;touch-action:none}
+html.menu-open .menu-dim{opacity:1;visibility:visible}
+html.menu-open,html.menu-open body{overflow:hidden;overscroll-behavior:none}
+
+/* ===== План догляду: сходинки ===== */
+/* A — сходинки: рівні кроки висоти, текст у всіх картках на однакових рівнях */
+.cpa{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:end;position:relative;padding-bottom:34px}
+.cpa-step{position:relative;display:flex;flex-direction:column;height:calc(370px + var(--i) * 46px);padding:22px 18px 20px;border-radius:var(--r-s);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.66));border:1px solid rgba(255,255,255,.95);box-shadow:0 18px 40px rgba(28,20,18,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  opacity:0;transform:translateY(28px);transition:opacity .6s ease calc(var(--i) * 110ms),transform .7s cubic-bezier(.2,.7,.2,1) calc(var(--i) * 110ms)}
+.cpa.in .cpa-step{opacity:1;transform:none}
+.cpa-step:nth-of-type(5){background:linear-gradient(180deg,rgba(193,38,44,.1),rgba(255,255,255,.72));border-color:rgba(193,38,44,.22)}
+.cpa-n{font-family:var(--serif);font-style:italic;font-size:34px;line-height:1;color:var(--red)}
+.cpa-body{margin-top:auto;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:24px 34px 118px 52px;row-gap:10px}
+.cpa-body>*{grid-column:1}
+.cpa-ic{display:block;width:24px;height:24px;fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.cpa-step b{align-self:start;font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;line-height:1.3}
+.cpa-body>span{font-size:13px;line-height:1.45;color:var(--ink2)}
+.cpa-step em{justify-self:start;padding:6px 10px;border-radius:12px;background:rgba(193,38,44,.08);color:var(--red);font-style:normal;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;line-height:1.35;align-self:start}
+.cpa-rail{position:absolute;left:0;right:0;bottom:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:1px;background:linear-gradient(90deg,var(--line),var(--red))}
+.cpa-rail i{justify-self:center;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:#fff;border:1.5px solid var(--red)}
+
+@media (max-width:700px){
+  .cpa{grid-template-columns:1fr;gap:10px;padding:0 0 0 30px}
+  .cpa-step{height:auto;flex-direction:row;gap:14px;padding:16px;align-items:flex-start;transform:translateX(18px)}
+  .cpa-n{font-size:28px;flex:none;width:34px}
+  .cpa-body{margin:0;display:flex;flex-direction:column;gap:5px}
+  .cpa-ic{display:none}
+  .cpa-step em{min-height:0;padding:5px 10px;border-radius:999px}
+  .cpa-rail{left:8px;right:auto;top:10px;bottom:10px;width:1px;height:auto;display:flex;flex-direction:column;justify-content:space-around;background:linear-gradient(180deg,var(--line),var(--red))}
+  .cpa-rail i{margin:0 0 0 -4px}
+}
+/* «Про клініку»: акцент в заголовку й повітря над текстом — і на комп’ютері */
+.ab-main h2 .it{color:var(--red)}
+@media (min-width:701px){.ab-main .ab-lead{margin-top:clamp(22px,3vh,40px)}}
+
+/* сходинки: реакція на наведення (комп’ютер) */
+@media (hover:hover) and (min-width:701px){
+  .cpa.done .cpa-step{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,border-color .45s,background .45s}
+  .cpa.done .cpa-step:hover{transform:translateY(-10px);box-shadow:0 28px 56px rgba(60,30,25,.14);border-color:rgba(193,38,44,.35)}
+  .cpa-n,.cpa-ic,.cpa-step em{transition:transform .45s cubic-bezier(.2,.7,.2,1),stroke .35s,background .35s,color .35s}
+  .cpa-step:hover .cpa-n{transform:scale(1.12) translateX(2px)}
+  .cpa-step:hover .cpa-ic{stroke:var(--red)}
+  .cpa-step:hover em{background:var(--red);color:#fff}
+  .cpa-rail i{transition:background .35s,transform .35s}
+  .cpa:has(.cpa-step:nth-of-type(1):hover) .cpa-rail i:nth-child(1){background:var(--red);transform:scale(1.5)}
+  .cpa:has(.cpa-step:nth-of-type(2):hover) .cpa-rail i:nth-child(2){background:var(--red);transform:scale(1.5)}
+  .cpa:has(.cpa-step:nth-of-type(3):hover) .cpa-rail i:nth-child(3){background:var(--red);transform:scale(1.5)}
+  .cpa:has(.cpa-step:nth-of-type(4):hover) .cpa-rail i:nth-child(4){background:var(--red);transform:scale(1.5)}
+  .cpa:has(.cpa-step:nth-of-type(5):hover) .cpa-rail i:nth-child(5){background:var(--red);transform:scale(1.5)}
+}

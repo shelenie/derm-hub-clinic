@@ -545,7 +545,7 @@ html.menu-open,html.menu-open body{overflow:hidden;overscroll-behavior:none}
 .cpa-rail{position:absolute;left:0;right:0;bottom:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:1px;background:linear-gradient(90deg,var(--line),var(--red))}
 .cpa-rail i{justify-self:center;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:#fff;border:1.5px solid var(--red)}
 
-@media (max-width:700px){
+@media (max-width:900px){
   .cpa{grid-template-columns:1fr;gap:10px;padding:0 0 0 30px}
   .cpa-step{height:auto;flex-direction:row;gap:14px;padding:16px;align-items:flex-start;transform:translateX(18px)}
   .cpa-n{font-size:28px;flex:none;width:34px}
@@ -611,3 +611,13 @@ html.menu-open,html.menu-open body{overflow:hidden;overscroll-behavior:none}
 /* план догляду: більше повітря між заголовком «Кроки догляду» і текстом */
 #care-plan .pyr-copy h2{margin-bottom:44px}
 @media (max-width:700px){#care-plan .pyr-copy h2{margin-bottom:34px}}
+
+/* план догляду: на ноутбуках 13–15" сходинкам більше ширини (текст і плашки не вилазять) */
+@media (min-width:1101px){
+  #care-plan .ab-pyr{grid-template-columns:minmax(0,clamp(300px,24vw,440px)) minmax(0,1fr);column-gap:clamp(48px,5vw,110px)}
+  #care-plan .pyr-copy{max-width:none}
+}
+@media (min-width:1101px) and (max-width:1240px){
+  #care-plan .ab-pyr{grid-template-columns:minmax(0,1fr)}
+}
+.cpa-body>span,.cpa-step b{overflow-wrap:anywhere}

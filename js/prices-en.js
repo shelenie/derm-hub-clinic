@@ -5,7 +5,7 @@ const R = (name, price, note) => ({ name, price, note });
 
 window.PRICES = [
   {
-    id: 'care', tab: 'Skincare', photo: 'img/f-masktowel.jpg', photoPos: '50% 35%', photoAlt: 'Skincare: face mask',
+    id: 'care', tab: 'Skincare', photo: 'img/f-masktowel.webp', photoPos: '50% 35%', photoAlt: 'Skincare: face mask',
     cards: [
       { cat: 'Skincare', title: 'Facials and HydraFacial', short: 'Machine and combination facials, back facials', svc: 'Facials and skincare',
         about: {"text":"Cleansing clears pores of comedones and excess sebum. HydraFacial is a machine-based treatment: vacuum cleansing, gentle exfoliation and hydrating serums in one visit.","title":"What it helps with","list":["Enlarged pores and comedones","Oily or combination skin","Dull complexion","Preparing skin for other treatments"]},

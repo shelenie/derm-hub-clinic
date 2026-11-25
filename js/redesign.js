@@ -657,3 +657,87 @@ function dimRail(r, minO) {
     else if (b.left < R.left + parseFloat(getComputedStyle(r).paddingLeft) - 2) o = (b.right - fade - R.left - parseFloat(getComputedStyle(r).paddingLeft)) / Math.max(b.width - fade, 1) * .7 + .3;
     o = Math.max(minO, Math.min(1, o)); ch.style.opacity = o < .999 ? o.toFixed(2) : ''; });
 }
+
+// популярні процедури (комп'ютер і планшет): секція прилипає, а ряд карток їде вліво при вертикальному скролі —
+// translateX від 0 до -(ширина ряду - ширина вікна); довжина прокрутки залежить від кількості карток
+{ const sec = document.querySelector('.dirs'), stage = sec && sec.querySelector('.dirs-stage'), pin = stage && stage.querySelector('.dirs-pin'),
+    row = pin && pin.querySelector('.dirs-row'), bar = pin && pin.querySelector('.rail-bar i');
+  if (row) {
+    const mq = matchMedia('(min-width:701px)'), calm = matchMedia('(prefers-reduced-motion: reduce)');
+    let on = false, dist = 0, top = 0, queued = false;
+    const head = () => (document.querySelector('.head') || {}).offsetHeight || 0;
+    const move = () => {
+      queued = false; if (!on) return;
+      const k = dist > 0 ? Math.min(1, Math.max(0, (top - stage.getBoundingClientRect().top) / dist)) : 0;
+      row.style.transform = 'translate3d(' + (-k * dist).toFixed(1) + 'px,0,0)';
+      if (bar) { const part = row.clientWidth / (row.clientWidth + dist); bar.style.width = (part * 100) + '%'; bar.style.transform = 'translateX(' + (k * (1 / part - 1) * 100) + '%)'; }
+    };
+    const setup = () => {
+      on = mq.matches && !calm.matches; sec.classList.toggle('hx', on);
+      if (!on) { stage.style.height = ''; pin.style.top = ''; row.style.transform = ''; return; }
+      row.style.transform = '';
+      const kids = [...row.children], last = kids.reduce((m, c) => Math.max(m, c.getBoundingClientRect().right), 0), rr = row.getBoundingClientRect();
+      dist = Math.max(0, Math.round(last - (rr.right - parseFloat(getComputedStyle(row).paddingRight))));
+      const hh = head(), ph = pin.offsetHeight;
+      top = Math.max(hh, Math.round((innerHeight - ph + hh) / 2));
+      pin.style.top = top + 'px';
+      stage.style.height = (ph + dist) + 'px';
+      move();
+    };
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(move); } };
+    addEventListener('scroll', ask, { passive: true });
+    addEventListener('resize', setup); addEventListener('load', setup);
+    mq.addEventListener('change', setup); calm.addEventListener('change', setup);
+    setup();
+  }
+}
+
+// футер: 80 ледь помітних точок різного розміру літають під лінією над розділами й тікають від курсора
+{ const cv = document.querySelector('.foot-fx'), box = cv && cv.closest('.footer'), fb = box && box.querySelector('.foot-bottom');
+  if (cv && cv.getContext) {
+    const ctx = cv.getContext('2d'), N = 80, FLEE = 120, calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0, H = 0, pts = [], vis = false, raf = 0, mx = -1e4, my = -1e4;
+    const make = () => {
+      const k = Math.random(), r = .8 + k * k * 1.6, red = Math.random() < .12;
+      const o = (red ? .18 : .22) + Math.min(1, r / 3.4) * (red ? .3 : .4);
+      const a = Math.random() * Math.PI * 2, v = .12 + Math.random() * .3;
+      return { x: Math.random() * W, y: Math.random() * H, vx: Math.cos(a) * v, vy: Math.sin(a) * v, kx: 0, ky: 0, r,
+        c: red ? 'rgba(193,38,44,' + o.toFixed(2) + ')' : 'rgba(168,140,128,' + o.toFixed(2) + ')' };
+    };
+    const size = () => {
+      const d = Math.min(devicePixelRatio || 1, 2), t = fb ? fb.offsetTop : 0, w = box.clientWidth, h = box.clientHeight - t;
+      cv.style.top = t + 'px';
+      if (!w || !h) return;
+      const sx = W ? w / W : 1, sy = H ? h / H : 1; W = w; H = h;
+      cv.width = W * d; cv.height = H * d; cv.style.width = W + 'px'; cv.style.height = H + 'px'; ctx.setTransform(d, 0, 0, d, 0, 0);
+      if (!pts.length) for (let i = 0; i < N; i++) pts.push(make());
+      else pts.forEach(p => { p.x *= sx; p.y *= sy; });
+      draw();
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = p.c; ctx.fill(); });
+    };
+    const step = () => {
+      raf = 0; if (!vis) return;
+      pts.forEach(p => {
+        p.vx += (Math.random() - .5) * .02; p.vy += (Math.random() - .5) * .02;
+        const v = Math.hypot(p.vx, p.vy), m = .45; if (v > m) { p.vx *= m / v; p.vy *= m / v; }
+        // курсор поруч — точка м'яко відлітає; що менша точка, то швидше тікає
+        const dx = p.x - mx, dy = p.y - my, dd = Math.hypot(dx, dy);
+        if (dd < FLEE && dd > .1) { const f = (1 - dd / FLEE) * 1.6 / (.6 + p.r * .25); p.kx += dx / dd * f; p.ky += dy / dd * f; }
+        p.kx *= .9; p.ky *= .9;
+        p.x += p.vx + p.kx; p.y += p.vy + p.ky;
+        if (p.x < 0 || p.x > W) { p.vx *= -1; p.kx *= -.5; p.x = Math.max(0, Math.min(W, p.x)); }
+        if (p.y < 0 || p.y > H) { p.vy *= -1; p.ky *= -.5; p.y = Math.max(0, Math.min(H, p.y)); }
+      });
+      draw(); raf = requestAnimationFrame(step);
+    };
+    const track = e => { const b = cv.getBoundingClientRect(); mx = e.clientX - b.left; my = e.clientY - b.top; };
+    box.addEventListener('pointermove', track, { passive: true });
+    box.addEventListener('pointerdown', track, { passive: true });
+    box.addEventListener('pointerleave', () => { mx = my = -1e4; });
+    new ResizeObserver(size).observe(box); size();
+    if (!calm) new IntersectionObserver(es => { vis = es[0].isIntersecting; if (vis && !raf) raf = requestAnimationFrame(step); }).observe(box);
+  }
+}

@@ -9,7 +9,7 @@
 :root{
   /* кольори */
   --red:#C1262C; --red-d:#A51F25;                 /* лише акценти й кнопки */
-  --ink:#1C1C1C; --ink2:#55504C; --ink3:#8A8480;
+  --ink:#1C1C1C; --ink2:#55504C; --ink3:#6F6965;
   --line:rgba(28,28,28,.12);
   --on-dark:#fff; --on-dark2:rgba(255,255,255,.82); --on-dark3:rgba(255,255,255,.72);
 
@@ -621,3 +621,12 @@ html.menu-open,html.menu-open body{overflow:hidden;overscroll-behavior:none}
   #care-plan .ab-pyr{grid-template-columns:minmax(0,1fr)}
 }
 .cpa-body>span,.cpa-step b{overflow-wrap:anywhere}
+
+/* популярні процедури: горизонтальний скрол прилиплої секції (≥701px, вмикає JS класом .hx) */
+.dirs.hx .dirs-pin{position:sticky;margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad);overflow:clip}
+.dirs.hx .dirs-row{overflow:visible;scroll-snap-type:none;will-change:transform}
+.dirs.hx .rail-nav{display:none}
+
+/* футер: білі точки літають під лінією над розділами (висоту й відступ задає JS) */
+.footer{position:relative;isolation:isolate}
+.foot-fx{position:absolute;top:0;left:0;z-index:-1;display:block;pointer-events:none}

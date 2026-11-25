@@ -13,8 +13,11 @@ const DOC = {
 const P = [
   // head / meta
   ['<html lang="uk"', '<html lang="en"'],
+  ['"streetAddress":"вул. Шевченка, 37","addressLocality":"Бориспіль"', '"streetAddress":"37 Shevchenka St","addressLocality":"Boryspil"'],
+  ['"url":"https://derm-hub-clinic.vercel.app/","image":"https://derm-hub-clinic.vercel.app/img/og-uk.jpg"', '"url":"https://derm-hub-clinic.vercel.app/en.html","image":"https://derm-hub-clinic.vercel.app/img/og-en.jpg"'],
+  ['<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Оригінал повідомлення з відгуком">', '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Original message with the review">'],
   ['<title>Derm Hub — дерматологія і косметологія у Борисполі</title>', '<title>Derm Hub — dermatology & aesthetics in Boryspil</title>'],
-  ['Дермато-косметологічний центр у Борисполі: доказова дерматологія, трихологія, апаратна та ін\'єкційна косметологія. Ціни на сайті, онлайн-запис.', 'Dermatology and aesthetics clinic in Boryspil, Ukraine: evidence-based dermatology, hair and scalp care, laser and injectable treatments. Transparent prices and online booking.'],
+  ['Дермато-косметологічний центр у Борисполі: доказова дерматологія, трихологія, апаратна та ін\'єкційна косметологія. Ціни на сайті, онлайн-запис.', 'Dermatology and aesthetics clinic in Boryspil: evidence-based dermatology, hair and scalp care, laser and injectable treatments. Prices and online booking.'],
   ['Derm Hub — на головну', 'Derm Hub — home'],
   ['aria-label="Розділи"', 'aria-label="Sections"'],
   ['<div class="langs"><button type="button" class="on">UA</button><button type="button">EN</button></div>', '<div class="langs en"><button type="button">UA</button><button type="button" class="on">EN</button></div>'],
@@ -193,7 +196,6 @@ const P = [
   ['Політика <span class="it">конфіденційності</span>', 'Privacy <span class="it">policy</span>'],
   ['aria-label="Закрити"', 'aria-label="Close"'],
   ['aria-label="Оригінал відгуку"', 'aria-label="Original review"'],
-  ['alt="Оригінал повідомлення з відгуком"', 'alt="Original message with the review"'],
   ['aria-label="Нагору"', 'aria-label="Back to top"'],
   ['js/prices.js?', 'js/prices-en.js?'],
   ['<span class="eb-m">Медична клініка · Бориспіль</span>', '<span class="eb-m">Medical clinic · Boryspil</span>'],
